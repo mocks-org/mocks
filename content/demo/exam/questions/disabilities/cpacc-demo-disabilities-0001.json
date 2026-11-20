@@ -1,0 +1,49 @@
+{
+	"id": "cpacc-demo-disabilities-0001",
+	"module": "disabilities",
+	"type": "single",
+	"stem": "Which model of disability locates disability primarily in barriers created by society and the environment?",
+	"options": [
+		{
+			"id": "social-model",
+			"text": "The social model",
+			"shortLabel": "Social model",
+			"rationale": "Locates disability in barriers created by society and the environment."
+		},
+		{
+			"id": "medical-model",
+			"text": "The medical model",
+			"shortLabel": "Medical model",
+			"rationale": "Frames disability as a problem located within the individual."
+		},
+		{
+			"id": "charity-model",
+			"text": "The charity model",
+			"shortLabel": "Charity model",
+			"rationale": "Frames disabled people as recipients of care or pity."
+		},
+		{
+			"id": "tragedy-model",
+			"text": "The tragedy model",
+			"shortLabel": "Tragedy model",
+			"rationale": "Frames disability as a personal misfortune."
+		}
+	],
+	"correctOptionId": "social-model",
+	"explanation": "The social model separates impairment from disability and focuses on removing the barriers that exclude people from participation.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: models of disability",
+			"url": "https://example.org/demo/models"
+		}
+	],
+	"images": [],
+	"difficulty": 2,
+	"tags": ["models"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

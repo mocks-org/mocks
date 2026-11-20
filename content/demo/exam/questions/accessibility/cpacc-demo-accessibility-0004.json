@@ -1,0 +1,49 @@
+{
+	"id": "cpacc-demo-accessibility-0004",
+	"module": "accessibility",
+	"type": "single",
+	"stem": "What should alternative text for an informative image do?",
+	"options": [
+		{
+			"id": "purpose-alt",
+			"text": "Convey the purpose or information of the image",
+			"shortLabel": "Purpose",
+			"rationale": "Describes what the image communicates in context."
+		},
+		{
+			"id": "repeat-caption",
+			"text": "Repeat the nearby caption word for word",
+			"shortLabel": "Repeat caption",
+			"rationale": "Usually adds no new information."
+		},
+		{
+			"id": "list-colors",
+			"text": "List every color used in the image",
+			"shortLabel": "List colors",
+			"rationale": "Describing colors is rarely the purpose of the image."
+		},
+		{
+			"id": "image-label",
+			"text": "Say that it is an image",
+			"shortLabel": "Image label",
+			"rationale": "The screen reader already announces that it is an image."
+		}
+	],
+	"correctOptionId": "purpose-alt",
+	"explanation": "Alternative text should convey the purpose or information the image provides in its context. Repeating a nearby caption or describing every color is usually not helpful.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: alternative text",
+			"url": "https://example.org/demo/alt-text"
+		}
+	],
+	"images": [],
+	"difficulty": 1,
+	"tags": ["alt-text"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

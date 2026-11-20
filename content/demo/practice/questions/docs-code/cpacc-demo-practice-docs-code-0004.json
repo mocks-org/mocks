@@ -1,0 +1,49 @@
+{
+	"id": "cpacc-demo-practice-docs-code-0004",
+	"module": "docs-code",
+	"type": "single",
+	"stem": "What is the most accessible link text in documentation?",
+	"options": [
+		{
+			"id": "click-here",
+			"text": "Click here",
+			"shortLabel": "Click here",
+			"rationale": "It makes no sense out of context."
+		},
+		{
+			"id": "read-more",
+			"text": "Read more",
+			"shortLabel": "Read more",
+			"rationale": "It does not say what will be read."
+		},
+		{
+			"id": "raw-url",
+			"text": "The full URL",
+			"shortLabel": "Full URL",
+			"rationale": "A raw URL is hard to understand and to read aloud."
+		},
+		{
+			"id": "descriptive",
+			"text": "Text that describes the destination or purpose",
+			"shortLabel": "Descriptive text",
+			"rationale": "Descriptive link text stays meaningful in a list of links."
+		}
+	],
+	"correctOptionId": "descriptive",
+	"explanation": "Link text should describe the destination or purpose, so it makes sense when read out of context in a list of links.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: link purpose",
+			"url": "https://example.org/demo/links"
+		}
+	],
+	"images": [],
+	"difficulty": 1,
+	"tags": ["links"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

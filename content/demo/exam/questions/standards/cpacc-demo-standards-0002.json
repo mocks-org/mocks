@@ -1,0 +1,49 @@
+{
+	"id": "cpacc-demo-standards-0002",
+	"module": "standards",
+	"type": "single",
+	"stem": "What is an Accessibility Conformance Report (ACR) used for?",
+	"options": [
+		{
+			"id": "acr-conformance",
+			"text": "To document how a product conforms to accessibility standards",
+			"shortLabel": "Conformance",
+			"rationale": "Records the results of an accessibility conformance evaluation."
+		},
+		{
+			"id": "legal-cert",
+			"text": "To certify that a product is legally compliant in every country",
+			"shortLabel": "Legal certificate",
+			"rationale": "An ACR documents conformance, not universal legal certification."
+		},
+		{
+			"id": "replace-testing",
+			"text": "To replace accessibility testing",
+			"shortLabel": "Replace testing",
+			"rationale": "An ACR reports evaluation results; it does not replace testing."
+		},
+		{
+			"id": "price-list",
+			"text": "To list the prices of assistive technology",
+			"shortLabel": "Price list",
+			"rationale": "An ACR is not a price list."
+		}
+	],
+	"correctOptionId": "acr-conformance",
+	"explanation": "An ACR documents how a product conforms to accessibility standards, usually by recording the results of an accessibility conformance evaluation.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: accessibility conformance reports",
+			"url": "https://example.org/demo/acr"
+		}
+	],
+	"images": [],
+	"difficulty": 2,
+	"tags": ["acr"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

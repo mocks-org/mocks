@@ -1,0 +1,49 @@
+{
+	"id": "cpacc-demo-accessibility-0001",
+	"module": "accessibility",
+	"type": "single",
+	"stem": "Which principle of universal design is about providing the same means of use for all users?",
+	"options": [
+		{
+			"id": "equitable-use",
+			"text": "Equitable use",
+			"shortLabel": "Equitable use",
+			"rationale": "Provides the same means of use for all users where possible."
+		},
+		{
+			"id": "flexibility-in-use",
+			"text": "Flexibility in use",
+			"shortLabel": "Flexibility",
+			"rationale": "Accommodates a wide range of preferences and abilities."
+		},
+		{
+			"id": "simple-intuitive",
+			"text": "Simple and intuitive use",
+			"shortLabel": "Simple use",
+			"rationale": "Makes use easy to understand regardless of experience."
+		},
+		{
+			"id": "tolerance-for-error",
+			"text": "Tolerance for error",
+			"shortLabel": "Error tolerance",
+			"rationale": "Minimizes the consequences of accidental actions."
+		}
+	],
+	"correctOptionId": "equitable-use",
+	"explanation": "Equitable use means the design is useful and marketable to people with diverse abilities and provides the same means of use where possible.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: universal design principles",
+			"url": "https://example.org/demo/universal-design"
+		}
+	],
+	"images": [],
+	"difficulty": 2,
+	"tags": ["universal-design"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

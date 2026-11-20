@@ -1,0 +1,49 @@
+{
+	"id": "cpacc-demo-practice-docs-code-0002",
+	"module": "docs-code",
+	"type": "single",
+	"stem": "What is the most reliable way to associate a visible form label with its input?",
+	"options": [
+		{
+			"id": "placeholder",
+			"text": "Use placeholder text as the label",
+			"shortLabel": "Placeholder only",
+			"rationale": "Placeholder text disappears on input and is not a label."
+		},
+		{
+			"id": "label-for",
+			"text": "Use a label element with a for attribute matching the input id",
+			"shortLabel": "label for",
+			"rationale": "This gives a programmatic label and a larger click target."
+		},
+		{
+			"id": "adjacent-text",
+			"text": "Place a paragraph next to the input",
+			"shortLabel": "Adjacent text",
+			"rationale": "Visual proximity alone does not associate the text with the input."
+		},
+		{
+			"id": "title-attr",
+			"text": "Add a title attribute to the input",
+			"shortLabel": "title attribute",
+			"rationale": "title is not a substitute for a visible, programmatic label."
+		}
+	],
+	"correctOptionId": "label-for",
+	"explanation": "A label element whose for attribute matches the input id gives the input an accessible name and lets clicking the label focus the input.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: labelling form controls",
+			"url": "https://example.org/demo/forms"
+		}
+	],
+	"images": [],
+	"difficulty": 1,
+	"tags": ["forms"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

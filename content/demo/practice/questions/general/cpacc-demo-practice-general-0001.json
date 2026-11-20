@@ -1,0 +1,37 @@
+{
+	"id": "cpacc-demo-practice-general-0001",
+	"module": "general",
+	"type": "single",
+	"stem": "Accessibility only concerns people who use screen readers.",
+	"options": [
+		{
+			"id": "true",
+			"text": "True",
+			"shortLabel": "True",
+			"rationale": "Accessibility is much broader than screen-reader use."
+		},
+		{
+			"id": "false",
+			"text": "False",
+			"shortLabel": "False",
+			"rationale": "Correct: accessibility covers many disabilities and situations."
+		}
+	],
+	"correctOptionId": "false",
+	"explanation": "Accessibility covers a wide range of disabilities and situations, including low vision, hearing, motor, cognitive, and temporary or situational limitations. Screen-reader support is one part of it.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: who accessibility helps",
+			"url": "https://example.org/demo/audiences"
+		}
+	],
+	"images": [],
+	"difficulty": 1,
+	"tags": ["basics"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

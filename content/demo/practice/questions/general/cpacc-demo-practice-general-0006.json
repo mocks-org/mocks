@@ -1,0 +1,37 @@
+{
+	"id": "cpacc-demo-practice-general-0006",
+	"module": "general",
+	"type": "single",
+	"stem": "Keyboard access only matters for people who cannot use a mouse.",
+	"options": [
+		{
+			"id": "true",
+			"text": "True",
+			"shortLabel": "True",
+			"rationale": "Keyboard access matters well beyond mouse-only users."
+		},
+		{
+			"id": "false",
+			"text": "False",
+			"shortLabel": "False",
+			"rationale": "Correct: many kinds of users rely on keyboard access."
+		}
+	],
+	"correctOptionId": "false",
+	"explanation": "Many people use a keyboard or another input device: keyboard-only users, switch users, people with temporary injuries, and power users. Keyboard support is a baseline requirement.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: keyboard access",
+			"url": "https://example.org/demo/keyboard"
+		}
+	],
+	"images": [],
+	"difficulty": 1,
+	"tags": ["keyboard"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

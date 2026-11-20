@@ -1,0 +1,49 @@
+{
+	"id": "cpacc-demo-disabilities-0003",
+	"module": "disabilities",
+	"type": "single",
+	"stem": "Which of these is an example of assistive technology?",
+	"options": [
+		{
+			"id": "screen-reader",
+			"text": "A screen reader",
+			"shortLabel": "Screen reader",
+			"rationale": "Software that converts on-screen content to speech or braille."
+		},
+		{
+			"id": "standard-keyboard",
+			"text": "A standard keyboard",
+			"shortLabel": "Standard keyboard",
+			"rationale": "A general input device, not assistive technology by itself."
+		},
+		{
+			"id": "monitor",
+			"text": "A computer monitor",
+			"shortLabel": "Monitor",
+			"rationale": "A general display device."
+		},
+		{
+			"id": "standing-desk",
+			"text": "A standing desk",
+			"shortLabel": "Standing desk",
+			"rationale": "Furniture that is not assistive technology in this context."
+		}
+	],
+	"correctOptionId": "screen-reader",
+	"explanation": "Assistive technology is a product or system that maintains or improves the functional capabilities of a person with a disability. A screen reader is one example.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: assistive technology",
+			"url": "https://example.org/demo/assistive-technology"
+		}
+	],
+	"images": [],
+	"difficulty": 1,
+	"tags": ["assistive-technology"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

@@ -1,0 +1,24 @@
+{
+	"schemaVersion": 3,
+	"exam": "cpacc-demo",
+	"bank": {
+		"id": "cpacc-demo-practice",
+		"kind": "practice",
+		"title": "CPACC Demo Practice Bank",
+		"version": "0.0.0-demo",
+		"status": "published",
+		"optionCount": 4
+	},
+	"modules": [
+		{
+			"id": "general",
+			"title": "General accessibility",
+			"questionCount": null
+		},
+		{
+			"id": "docs-code",
+			"title": "Documentation and code",
+			"questionCount": null
+		}
+	]
+}
