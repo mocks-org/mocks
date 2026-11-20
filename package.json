@@ -13,8 +13,9 @@
 		"preview": "wrangler dev --port 4173",
 		"wrangler:init": "node scripts/wrangler-init.mjs",
 		"prepare": "svelte-kit sync || echo ''",
-		"check": "wrangler types && node scripts/strip-global-props.mjs && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
+		"check": "wrangler types && node scripts/strip-global-props.mjs && svelte-kit sync && node scripts/theme/check.ts && svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
+		"theme:check": "node scripts/theme/check.ts",
 		"lint": "prettier --check . && eslint .",
 		"format": "prettier --write .",
 		"test:unit": "vitest --passWithNoTests",
@@ -88,6 +89,7 @@
 	},
 	"imports": {
 		"#lib": "./src/lib/index.js",
-		"#lib/*": "./src/lib/*"
+		"#lib/*": "./src/lib/*",
+		"#theme/*": "./src/theme/*"
 	}
 }

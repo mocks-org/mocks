@@ -6,8 +6,8 @@
 	import Button from '#lib/components/ui/Buttons.svelte';
 	import ExternalLink from '#lib/components/ui/ExternalLink.svelte';
 	import Seo from '#lib/components/seo/Seo.svelte';
-	import SiteHeader from '#lib/components/layout/site/SiteHeader.svelte';
-	import SiteFooter from '#lib/components/layout/site/SiteFooter.svelte';
+	import Header from '#theme/Header.svelte';
+	import Footer from '#theme/Footer.svelte';
 	import { site } from '#lib/settings/site';
 	import {
 		buildDurationOptions,
@@ -59,7 +59,7 @@
 
 <div class="flex min-h-dvh flex-col">
 	<header>
-		<SiteHeader />
+		<Header />
 	</header>
 
 	<main
@@ -290,6 +290,6 @@
 	</main>
 
 	<footer class="w-full">
-		<SiteFooter />
+		<Footer />
 	</footer>
 </div>

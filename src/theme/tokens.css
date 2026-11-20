@@ -1,0 +1,54 @@
+/*
+ * FORK-OWNED FILE — the palette and font stacks.
+ *
+ * Only values live here. The names (--primary, --surface, --font-sans, …) are
+ * the contract that `src/routes/layout.css` maps into Tailwind utilities, so
+ * keep the names and change the values.
+ *
+ * Run `pnpm theme:check` after editing.
+ */
+
+:root {
+	--light: oklch(1 0 0);
+	--light-50: oklch(0.9851 0 0);
+	--light-100: oklch(0.9702 0 0);
+	--light-200: oklch(0.9219 0 0);
+	--light-300: oklch(0.8699 0 0);
+	--light-400: oklch(0.7155 0 0);
+	--light-500: oklch(0.5555 0 0);
+	--light-600: oklch(0.4386 0 0);
+	--light-700: oklch(0.3715 0 0);
+	--light-800: oklch(0.2686 0 0);
+	--light-900: oklch(0.2046 0 0);
+	--light-950: oklch(0.1448 0 0);
+
+	--dark: oklch(0 0 0);
+	--dark-50: oklch(0.1448 0 0);
+	--dark-100: oklch(0.2046 0 0);
+	--dark-200: oklch(0.2686 0 0);
+	--dark-300: oklch(0.3368 0 0);
+	--dark-400: oklch(0.4386 0 0);
+	--dark-500: oklch(0.6334 0 0);
+	--dark-600: oklch(0.7155 0 0);
+	--dark-700: oklch(0.8699 0 0);
+	--dark-800: oklch(0.9219 0 0);
+	--dark-900: oklch(0.9702 0 0);
+	--dark-950: oklch(0.9851 0 0);
+
+	--primary: oklch(0.6996 0.1953 37.26);
+	--primary-accent: oklch(0.5923 0.2131 33.97);
+	--primary-muted: oklch(0.7655 0.1427 37.81);
+
+	--correct-surface: oklch(0.9793 0.0207 166.11);
+	--on-correct-surface: oklch(0.4283 0.1135 151.48);
+	--wrong-surface: oklch(0.9705 0.0129 17.38);
+	--on-wrong-surface: oklch(0.3999 0.1641 29.23);
+
+	/*
+	 * Font families. To use another family, add its @fontsource import at the
+	 * top of this file (or the files you add next to it) and change the name.
+	 */
+	--theme-font-sans: 'Geist Variable';
+	--theme-font-serif: 'Literata Variable';
+	--theme-font-mono: 'Geist Mono Variable';
+}

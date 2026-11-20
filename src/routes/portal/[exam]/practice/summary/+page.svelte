@@ -9,8 +9,8 @@
 	import { cn } from '#lib/utils/cn';
 	import FullscreenButton from '#lib/components/layout/portal/FullscreenButton.svelte';
 	import PracticeFooter from '#lib/components/layout/portal/PracticeFooter.svelte';
-	import SiteHeader from '#lib/components/layout/site/SiteHeader.svelte';
-	import SiteFooter from '#lib/components/layout/site/SiteFooter.svelte';
+	import Header from '#theme/Header.svelte';
+	import Footer from '#theme/Footer.svelte';
 	import ExternalLink from '#lib/components/ui/ExternalLink.svelte';
 	import MarkdownText from '#lib/components/ui/MarkdownText.svelte';
 	import {
@@ -140,7 +140,7 @@
 		</header>
 	{:else}
 		<header>
-			<SiteHeader />
+			<Header />
 		</header>
 	{/if}
 
@@ -384,7 +384,7 @@
 		<PracticeFooter exam={data.exam} mode="summary" />
 	{:else if !session || !counts}
 		<footer class="w-full">
-			<SiteFooter />
+			<Footer />
 		</footer>
 	{/if}
 </div>
