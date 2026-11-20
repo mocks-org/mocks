@@ -4,10 +4,6 @@ An unofficial, non-commercial, free practice-exam app for multiple choice based 
 
 > Mocks is independent and non-commercial. All certification names and trademarks are property of their respective owners. Scores are practice feedback does not constitute, official results.
 
----
-
-[![Sync content](https://github.com/mocks-org/mocks/actions/workflows/sync-content.yml/badge.svg)](https://github.com/mocks-org/mocks/actions/workflows/sync-content.yml) [![PR gate](https://github.com/mocks-org/mocks/actions/workflows/pr-gate.yml/badge.svg?branch=main&event=pull_request)](https://github.com/mocks-org/mocks/actions/workflows/pr-gate.yml)
-
 ## Requirements
 
 - Node 26
@@ -16,18 +12,15 @@ An unofficial, non-commercial, free practice-exam app for multiple choice based 
 
 ## Documentation
 
-- [Content packs](docs/content-packs.md) — manifest, pack layout, allowlist, schema versions
-- [Make it your own](docs/fork-your-own.md) — the edit surface, rebranding, browser-editable manifest
-- [Upgrading a fork](docs/upgrading.md) — merge rules and theme patches for repositories tracking upstream
-- [Authoring questions](docs/authoring.md) — question shape, options, references, review
-- [Deploy to Cloudflare](docs/deploy.md) — D1 setup, migrations, seeding, Actions
+- [Content packs](docs/content-packs.md) -- manifest, pack layout, allowlist, schema versions
+- [Make it your own](docs/fork-your-own.md) -- the edit surface, rebranding, browser-editable manifest
+- [Upgrading a fork](docs/upgrading.md) -- merge rules and theme patches for repositories tracking upstream
+- [Authoring questions](docs/authoring.md) -- question shape, options, references, review
+- [Deploy to Cloudflare](docs/deploy.md) -- D1 setup, migrations, seeding, Actions
 
 ## Create your copy
 
-This is a normal repository, not a one-off template. **Fork** it, or **clone** it
-and point `origin` at your own remote. Either way your copy shares history with
-`mocks-org/mocks`, so `git merge upstream/main` brings accessibility and logic
-fixes while your skin in `src/theme/` stays yours.
+**Fork** it, or **clone** it and point `origin` at your own remote. Either way your copy shares history with `mocks-org/mocks`, so `git merge upstream/main` brings accessibility and logic fixes while your skin in `src/theme/` stays yours.
 
 ```sh
 # after forking on GitHub
@@ -37,22 +30,13 @@ git remote add upstream https://github.com/mocks-org/mocks.git
 pnpm install
 ```
 
-If you clone upstream directly and push to a new remote, `origin` already points
-at `mocks-org/mocks`; merge `origin/main` instead of `upstream/main`.
+If you clone upstream directly and push to a new remote, `origin` already points at `mocks-org/mocks`, merge `origin/main` instead of `upstream/main`.
 
-1. `pnpm wrangler:init`, rename the worker in `wrangler.jsonc`, then
-   `pnpm exec wrangler d1 create <database-name>` and paste the printed id into
-   `wrangler.jsonc`.
+1. `pnpm wrangler:init`, rename the worker in the `wrangler.jsonc`, then `pnpm exec wrangler d1 create <database-name>` and paste the printed id into `wrangler.jsonc`.
 2. `pnpm db:migrate:local`.
-3. Seed the bundled demo with `pnpm db:seed:demo:local`. The repository ships no
-   exam content beyond the demo, so `content/packs.json` starts empty. Install a
-   real pack with `pnpm content:add github:<org>/<pack> --ref <sha>`, then run
-   `pnpm bank:seed:local`. See [content packs](docs/content-packs.md).
-4. Edit `src/theme/` for the look, and `src/lib/settings/site.ts` plus the `.svx`
-   pages for the content (see [make it your own](docs/fork-your-own.md)).
-5. Deploy (see [Deploy](#deploy)), enable Actions in the repository settings, then
-   run **Actions → Sync content → Run workflow** once to confirm the pull-request
-   flow.
+3. Seed the bundled demo with `pnpm db:seed:demo:local`. The repository ships no exam content beyond the demo, so `content/packs.json` starts empty. Install a real pack with `pnpm content:add github:<org>/<pack> --ref <sha>`, then run `pnpm bank:seed:local`. See [content packs](docs/content-packs.md).
+4. Edit `src/theme/` for the look, and `src/lib/settings/site.ts` plus the `.svx` pages for the content (see [make it your own](docs/fork-your-own.md)).
+5. Deploy (see [Deploy](#deploy)), enable Actions in the repository settings, then run **Actions → Sync content → Run workflow** once to confirm the pull-request flow.
 
 Keeping up to date is a normal merge:
 
@@ -61,23 +45,20 @@ git fetch upstream
 git merge upstream/main     # resolve src/theme conflicts in your favour
 ```
 
-The rules — what to take from upstream, what never to take, and how the lockfile
-and migrations are handled — are in
-[keep it updated](docs/fork-your-own.md#5-keep-it-updated).
+The rules, what to take from upstream, what never to take, and how the lockfile and migrations are handled are in the
+[keep it updated](docs/fork-your-own.md#5-keep-it-updated) section.
 
 ## Quick start
 
 ```sh
 pnpm install
-pnpm wrangler:init          # copy wrangler.example.jsonc -> wrangler.jsonc
+pnpm wrangler:init  # copy wrangler.example.jsonc -> wrangler.jsonc
 pnpm db:migrate:local
-pnpm db:seed:demo:local     # bundled demo exam, used by the a11y gate
+pnpm db:seed:demo:local  # bundled demo exam, used by the a11y gate
 pnpm dev
 ```
 
-The demo exam renders at `/portal/cpacc-demo`. The homepage prefers
-`site.featuredExam` and falls back to the first published exam, so it works with
-the demo pack alone.
+The demo exam renders at `/portal/cpacc-demo`. The homepage prefers `site.featuredExam` and falls back to the first published exam, so it works with the demo pack alone.
 
 ## Content packs
 
@@ -96,8 +77,7 @@ README.md
 CONTRIBUTING.md
 ```
 
-`content:add` pins each installed pack in `content/packs.json` to a full commit
-SHA. The repository ships an empty manifest; an installed pack looks like this:
+`content:add` pins each installed pack in `content/packs.json` to a full commit SHA. The repository ships an empty manifest; an installed pack looks like this:
 
 ```json
 {
@@ -108,35 +88,27 @@ SHA. The repository ships an empty manifest; an installed pack looks like this:
 }
 ```
 
-Add, update, remove, and inspect packs from this repository. It ships
-`content/packs.json` as `{}`, so the first `content:add` creates the entry:
+Add, update, remove, and inspect packs from this repository. It ships `content/packs.json` as `{}`, so the first `content:add` creates the entry:
 
 ```sh
 pnpm content:add github:mocks-org/mocks-cpacc --ref <sha>
 pnpm content:list
 pnpm content:update cpacc
 pnpm content:remove cpacc
-pnpm content:check      # manifest, directories, and schema versions agree
+pnpm content:check  # manifest, directories, and schema versions agree
 ```
 
 A sync only writes under `content/`, it never touches `src/`, `package.json`, or configs. Packs are validated in a temporary clone before anything is copied, and only an allowlisted set of files is accepted. The app supports schema version N and N-1.
 
-The same update is available in CI: **Actions → Sync content → Run workflow**
-(optionally choosing one pack and/or a ref). It validates the result and opens a
-pull request with the old → new refs and the per-module question delta; it never
-pushes to `main`. The workflow is manual-only, because GitHub silently disables
-scheduled workflows after about 60 days of repository inactivity.
+The same update is available in CI: **Actions → Sync content → Run workflow** (optionally choosing one pack and/or a ref). It validates the result and opens a pull request with the old → new refs and the per-module question delta; it never pushes to `main`. The workflow is manual-only, because GitHub silently disables scheduled workflows after about 60 days of repository inactivity.
 
-The bundled `content/demo` pack is not in the manifest and is never synced. It
-keeps `pnpm dev` and the accessibility CI job working without a network fetch.
+The bundled `content/demo` pack is not in the manifest and is never synced. It keeps `pnpm dev` and the accessibility CI job working without a network fetch.
 
-See [content packs](docs/content-packs.md) for the manifest rules, the full
-allowlist, the schema-version contract, and how to publish a pack of your own.
+See [content packs](docs/content-packs.md) for the manifest rules, the full allowlist, the schema-version contract, and how to publish a pack of your own.
 
 ## Authoring
 
-Question shape, references, option rules, markdown, and the review workflow are
-documented in [authoring](docs/authoring.md).
+Question shape, references, option rules, markdown, and the review workflow are documented in [authoring](docs/authoring.md).
 
 - The `/author` route is a client-only editor. It keeps drafts in `localStorage` and exports question or bank JSON.
 - Commit exported content to a pack repository, not to a synced `content/<exam>/` directory.
@@ -164,18 +136,11 @@ A fork owner should only need:
 | `content/packs.json`       | which packs are installed, pinned by SHA                                  |
 | `wrangler.jsonc`           | worker name and D1 database name/id                                       |
 
-Look changes stay in `src/theme/` (`tokens.css`, `Header.svelte`, `Footer.svelte`,
-`Home.svelte`, `SessionHeader.svelte`); `pnpm theme:check` refuses accessibility
-semantics there so fixes in `src/lib/` keep merging cleanly. Rebranding is a
-single-file change: edit `name`, `tagline`, `description`, `url` (your deployed
-origin, used for canonical URLs), `locale`, `featuredExam`, the link lists, and
-`social` in `site.ts`. The header, footer, document head, homepage, and authoring
-defaults all read from it. Then replace the prose in the `.svx` pages.
+Look changes stay in `src/theme/` (`tokens.css`, `Header.svelte`, `Footer.svelte`, `Home.svelte`, `SessionHeader.svelte`); `pnpm theme:check` refuses accessibility semantics there so fixes in `src/lib/` keep merging cleanly. Rebranding is a single-file change: edit `name`, `tagline`, `description`, `url` (your deployed origin, used for canonical URLs), `locale`, `featuredExam`, the link lists, and `social` in `site.ts`. The header, footer, document head, homepage, and authoring defaults all read from it. Then replace the prose in the `.svx` pages.
 
 Everything else is app code. If that list grows, treat it as a bug in the upstream app, not as documentation to add.
 
-[Make it your own](docs/fork-your-own.md) walks through the same surface step by
-step, including editing `content/packs.json` in the browser.
+[Make it your own](docs/fork-your-own.md) walks through the same surface step by step, including editing `content/packs.json` in the browser.
 
 ## Commands
 
@@ -216,5 +181,4 @@ Keep `wrangler.jsonc` out of git; it carries your account-specific database id. 
 - App code: MIT (`LICENSE`).
 - Question content: the licence declared by each pack. The CPACC Mocks pack uses [CC BY-SA 4.0](https://github.com/mocks-org/mocks-cpacc/blob/main/LICENSE).
 
-This repository is the upstream app. Fork or clone it, keep `src/theme/` as your
-own skin, and merge `upstream/main` for fixes.
+This repository is the upstream app. Fork or clone it, keep `src/theme/` as your own skin, and merge `upstream/main` for fixes.
