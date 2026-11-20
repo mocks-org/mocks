@@ -26,7 +26,8 @@
 	import { loadWorkspace, saveWorkspace } from '#lib/authoring/storage';
 	import { downloadJson, safeFilename } from '#lib/authoring/download';
 	import AuthorFooter from '#lib/components/author/AuthorFooter.svelte';
-	import { site } from '#lib/settings/site';
+	import HeaderBrand from '#lib/components/layout/site/HeaderBrand.svelte';
+	import SessionHeader from '#theme/SessionHeader.svelte';
 
 	// Icons
 	import IconArrowback from '~icons/oxy/arrow-left';
@@ -37,8 +38,6 @@
 	import IconRotateCcw from '~icons/oxy/rotate-ccw';
 	import IconDelete from '~icons/oxy/trash';
 	import IconUpload from '~icons/oxy/file-up';
-
-	const Logo = site.logo;
 
 	let workspace = $state<Workspace>(loadWorkspace() ?? createWorkspace());
 	let selectedIndex = $state(workspace.questions.length > 0 ? 0 : -1);
@@ -352,28 +351,11 @@
 
 <svelte:window onbeforeunload={flushPending} />
 <div class="flex min-h-dvh flex-col">
-	<header>
-		<a
-			href="#main-content"
-			class="oxy-focus absolute left-2 z-99 -translate-y-24 rounded px-px focus-visible:-translate-y-1"
-		>
-			Skip to main
-		</a>
-		<div
-			class="mx-auto flex w-full max-w-8xl flex-wrap items-center justify-between gap-4 px-3 py-2 sm:px-6"
-		>
-			<a
-				href={resolve('/(site)')}
-				class="oxy-focus flex w-fit shrink-0 items-center gap-2 rounded px-px"
-			>
-				<Logo aria-hidden="true" />
-				<span class="font-mono text-xl font-black tracking-tight text-on-surface-muted uppercase">
-					{site.name}
-				</span>
-				<span class="sr-only"> Home</span>
-			</a>
-		</div>
-	</header>
+	<SessionHeader brand={false} sticky={false}>
+		{#snippet leading()}
+			<HeaderBrand />
+		{/snippet}
+	</SessionHeader>
 	<main id="main-content" class="flex-1">
 		<div class="mx-auto w-full max-w-8xl px-3 py-12 sm:px-6">
 			<div class="flex items-center justify-between gap-2">

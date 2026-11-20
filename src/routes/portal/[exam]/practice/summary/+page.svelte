@@ -9,8 +9,9 @@
 	import { cn } from '#lib/utils/cn';
 	import FullscreenButton from '#lib/components/layout/portal/FullscreenButton.svelte';
 	import PracticeFooter from '#lib/components/layout/portal/PracticeFooter.svelte';
-	import SiteHeader from '#lib/components/layout/site/SiteHeader.svelte';
-	import SiteFooter from '#lib/components/layout/site/SiteFooter.svelte';
+	import Header from '#theme/Header.svelte';
+	import Footer from '#theme/Footer.svelte';
+	import SessionHeader from '#theme/SessionHeader.svelte';
 	import ExternalLink from '#lib/components/ui/ExternalLink.svelte';
 	import MarkdownText from '#lib/components/ui/MarkdownText.svelte';
 	import {
@@ -18,9 +19,7 @@
 		readPracticeSession,
 		type StoredPracticeSession
 	} from '#lib/utils/practice-storage';
-	import { site } from '#lib/settings/site';
 
-	const Logo = site.logo;
 	// Icons
 	import IconCorrect from '~icons/oxy/circle-check';
 	import IconWrong from '~icons/oxy/circle-x';
@@ -116,31 +115,14 @@
 
 <div class="flex min-h-dvh flex-col">
 	{#if session}
-		<header class="sticky top-0 z-20 border-b border-on-surface-muted bg-surface-accent">
-			<Button
-				variant="secondary"
-				size="sm"
-				href="#main-content"
-				class="absolute left-2 z-99 -translate-y-24 rounded px-px focus-visible:translate-y-2"
-			>
-				Skip to main
-			</Button>
-			<div
-				class="mx-auto flex min-h-11 w-full max-w-8xl flex-wrap items-center justify-between gap-4 px-3 py-1 sm:px-6"
-			>
-				<div class="flex items-center gap-2">
-					<Logo class="hidden sm:block" aria-hidden="true" />
-					<span class="hidden h-3 w-0.5 bg-primary-accent sm:block"></span>
-					<p class="min-w-0 truncate text-sm font-semibold text-on-surface">Practice summary</p>
-				</div>
-				<div class="flex items-center gap-2">
-					<FullscreenButton />
-				</div>
-			</div>
-		</header>
+		<SessionHeader brand title="Practice summary">
+			{#snippet actions()}
+				<FullscreenButton />
+			{/snippet}
+		</SessionHeader>
 	{:else}
 		<header>
-			<SiteHeader />
+			<Header />
 		</header>
 	{/if}
 
@@ -384,7 +366,7 @@
 		<PracticeFooter exam={data.exam} mode="summary" />
 	{:else if !session || !counts}
 		<footer class="w-full">
-			<SiteFooter />
+			<Footer />
 		</footer>
 	{/if}
 </div>

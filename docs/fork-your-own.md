@@ -1,8 +1,16 @@
 # Make it your own
 
-This repository is a template, not a fork of an upstream app. You create a new
-repository from it, edit a small set of files, and deploy it. There is no upstream
-merge and nothing to rebase.
+You can run this repository two ways:
+
+- **Template copy** — **Use this template → Create a new repository**. The copy
+  starts a fresh history, so it can never merge upstream again. Choose this when
+  you intend to replace the app rather than track it.
+- **Fork** — fork or clone upstream and push to your own remote. The copy shares
+  history with upstream, so `git merge upstream/main` brings accessibility and
+  logic fixes into your deployment. Choose this when you want to stay current.
+
+Both give the same edit surface. [Keep it updated](#5-keep-it-updated) covers the
+merge workflow and the conflict rules.
 
 This page covers the edit surface and the rebranding steps. For Cloudflare setup
 see [deploy](./deploy.md), for the pack format see
@@ -10,21 +18,56 @@ see [deploy](./deploy.md), for the pack format see
 
 ## The edit surface
 
-A template user should only need these files:
+A fork owner should only need these files:
 
-| Path                       | Purpose                                                                   |
-| -------------------------- | ------------------------------------------------------------------------- |
-| `src/lib/settings/site.ts` | name, logo, metadata, nav, footer, homepage copy, licences, featured exam |
-| `src/routes/(site)/*.svx`  | about and accessibility prose                                             |
-| `content/packs.json`       | which packs are installed, pinned by SHA                                  |
-| `wrangler.jsonc`           | worker name and D1 database name/id (not committed)                       |
+| Path                             | Purpose                                                                   |
+| -------------------------------- | ------------------------------------------------------------------------- |
+| `src/theme/tokens.css`           | palette values and font stacks                                            |
+| `src/theme/Header.svelte`        | header arrangement and styling                                            |
+| `src/theme/Footer.svelte`        | footer arrangement and styling                                            |
+| `src/theme/Home.svelte`          | homepage arrangement and styling                                          |
+| `src/theme/SessionHeader.svelte` | exam lobby, attempt, practice, summary, results and authoring bar         |
+| `src/lib/settings/site.ts`       | name, logo, metadata, nav, footer, homepage copy, licences, featured exam |
+| `src/routes/(site)/*.svx`        | about and accessibility prose                                             |
+| `content/packs.json`             | which packs are installed, pinned by SHA                                  |
+| `wrangler.jsonc`                 | worker name and D1 database name/id (not committed)                       |
 
-Everything else is app code. If you need to edit it for a routine rebrand, that is
-a bug in the template, not a missing instruction.
+Everything under `src/lib/` is app code. If you need to edit it for a routine
+rebrand, that is a bug in the template, not a missing instruction.
+
+## Skin vs core
+
+`src/theme/` is the skin and belongs to you. `src/lib/` is app code and belongs
+to upstream — that is where fixes land.
+
+The split is enforced, not aspirational: `pnpm theme:check` (part of `pnpm check`)
+fails when a theme file contains `aria-*`, `role=`, `tabindex=` or a landmark
+element (`nav`, `main`, `header`, `footer`). Those live in `#lib` components —
+`NavLinks.svelte`, `SkipLink.svelte`, `FooterLicences.svelte`, and so on — which
+the theme composes and styles through a `class` prop.
+
+That matters for updates. A fix in `src/lib` merges into your fork with no
+conflict, because you never edit those files. A fix in `src/theme` would land on
+lines you changed, so upstream ships it as a patch note in `UPGRADING.md`
+instead of a commit. The result: your skin survives, and a forgotten
+`aria-label` still reaches you.
+
+Practical consequences:
+
+- Links, social profiles, nav items, homepage copy — a `site.ts` edit. No markup
+  change, no merge conflict, no matter how many entries.
+- Restyling, reordering or dropping a block — a `src/theme/` edit.
+- The exam-session bar is one component (`src/theme/SessionHeader.svelte`) shared
+  by the lobby, the timed attempt, practice, the summary, results and the
+  authoring tool, so a change there applies to all six at once.
+- Custom markup that carries meaning (a new landmark, a dialog, a form control)
+  belongs in `src/lib/`, or open a PR upstream, so it can be fixed for everyone.
 
 ## 1. Create your copy
 
-1. On GitHub, choose **Use this template → Create a new repository**.
+1. On GitHub, either **Use this template → Create a new repository** (own
+   everything, no upstream merges) or **Fork** (keeps history, receives fixes).
+   See [keep it updated](#5-keep-it-updated) before you pick.
 2. Clone your new repository and run `pnpm install`.
 3. Create the local Wrangler config: `pnpm wrangler:init`.
 4. For deployment, create a D1 database and paste its id into `wrangler.jsonc`
@@ -42,6 +85,9 @@ starts empty; the template ships no exam content beyond the demo.
 Open `src/lib/settings/site.ts` and edit the fields in place. The header, footer,
 document head, homepage, and authoring defaults all read from this object, so one
 change updates every occurrence.
+
+For anything visual — spacing, type scale, arrangement, palette — edit
+`src/theme/` instead. `site.ts` is content, `src/theme/` is appearance.
 
 | Field                 | What it controls                                                   |
 | --------------------- | ------------------------------------------------------------------ |
@@ -136,6 +182,10 @@ updates the repository, not D1.
 | `worker-configuration.d.ts` | Generated by `wrangler types`                                   |
 | `.github/workflows/`        | The sync workflow and PR gate are part of the template contract |
 
+`src/theme/**` is the opposite of this table: it is yours, and editing it is the
+intended way to change the look. Run `pnpm theme:check` after a change; it refuses
+accessibility semantics in that directory.
+
 The bundled `content/demo/` pack is the exception: edit it directly if you need to
 change the demo, then regenerate `scripts/seed-demo.sql` with
 `pnpm bank:build content/demo` and concatenate the per-bank SQL in exam-then-practice
@@ -143,13 +193,61 @@ order. Do not add the demo to the manifest.
 
 ## 5. Keep it updated
 
-There is no upstream merge. You pull content by moving a pin, and you pull app
-changes by reviewing the upstream repository yourself and applying what you want.
-Content changes should arrive as pull requests in the pack repository, and in your
-app repository through the **Sync content** workflow, so nothing lands unreviewed.
+Two update channels. Do not mix them.
 
-A sync may only write under `content/`. If a diff appears in `src/` or a config
-file, close the pull request: that is a failed sync, not something to keep.
+| Channel  | How                                                          |
+| -------- | ------------------------------------------------------------ |
+| Content  | move a pack pin, or let **Sync content** open a pull request |
+| App code | `git fetch upstream && git merge upstream/main` — forks only |
+
+### Content
+
+Content moves by pin, never by merging the app. `pnpm content:update <exam>` (or
+the **Sync content** workflow) rewrites the pin and the files under
+`content/<exam>/`. A sync may only write under `content/`. If a diff appears in
+`src/` or a config file, close the pull request: that is a failed sync, not
+something to keep.
+
+### App code
+
+A **template copy** shares no git history with upstream, so a merge is one giant
+conflict. If you want fixes, use a **fork**. To convert an existing template copy,
+do this once on a branch:
+
+```sh
+git remote add upstream https://github.com/mocks-org/mocks.git
+git fetch upstream
+git merge --allow-unrelated-histories upstream/main
+```
+
+Resolve that single merge, and from then on `git merge upstream/main` behaves
+normally. Merges are per hunk, not per file: edits in different regions of the
+same file combine on their own.
+
+Resolution rules:
+
+| Path                                        | Who wins                                                                   |
+| ------------------------------------------- | -------------------------------------------------------------------------- |
+| `src/theme/**`                              | yours — take your side every time                                          |
+| `src/lib/**`, `src/routes/**`, `scripts/**` | upstream — take theirs, then re-apply a local change if you made one there |
+| `pnpm-lock.yaml`                            | `git checkout --theirs pnpm-lock.yaml && pnpm install`                     |
+| `drizzle/**`                                | upstream never edits an applied migration; a conflict means stop and ask   |
+
+To see what is coming before you merge:
+
+```sh
+git fetch upstream
+git log --oneline HEAD..upstream/main -- src/lib        # fixes you want
+git log --oneline HEAD..upstream/main -- src/theme      # changes that need your judgement
+```
+
+Then run `pnpm check && pnpm lint && pnpm test:unit -- --run`, and `pnpm test:a11y`
+if the change touches layout or navigation.
+
+Upstream commits are deliberate about what lands in `src/theme/`: after the first
+release it changes only to add a seam, and such a change is published in
+`UPGRADING.md` as a patch you apply yourself. That is the trade — the skin is
+yours, so a skin fix cannot be merged for you.
 
 ## Checklist
 
@@ -159,6 +257,7 @@ file, close the pull request: that is a failed sync, not something to keep.
 - [ ] Packs chosen, installed with `pnpm content:add … --ref <sha>`, seeded, and
       validated with `pnpm content:check`
 - [ ] `site.ts` edited, `site.url` matches the deployed origin
+- [ ] `src/theme/` restyled, `pnpm theme:check` passes
 - [ ] `.svx` pages replaced
 - [ ] Footer licence links match the packs you actually ship
 - [ ] Actions enabled, **Sync content** run once to confirm the PR flow

@@ -18,14 +18,20 @@ An unofficial, non-commercial, free practice-exam app for multiple choice based 
 
 - [Content packs](docs/content-packs.md) — manifest, pack layout, allowlist, schema versions
 - [Make it your own](docs/fork-your-own.md) — the edit surface, rebranding, browser-editable manifest
+- [Upgrading a fork](UPGRADING.md) — merge rules and theme patches for repositories tracking upstream
 - [Authoring questions](docs/authoring.md) — question shape, options, references, review
 - [Deploy to Cloudflare](docs/deploy.md) — D1 setup, migrations, seeding, Actions
 
 ## Use this template
 
-This is a template, not a fork of an upstream app: click **Use this template →
-Create a new repository**, then clone your copy. There is no upstream merge and
-nothing to rebase.
+Click **Use this template → Create a new repository**, then clone your copy. A
+template copy starts a fresh history, so it cannot merge upstream later: that is
+the right choice when you intend to replace the app.
+
+If you want to keep receiving accessibility and logic fixes while keeping your own
+look, **fork** instead. The skin lives in `src/theme/`, core fixes land in
+`src/lib/` and merge cleanly into a fork. See
+[make it your own](docs/fork-your-own.md#5-keep-it-updated).
 
 1. `pnpm install`.
 2. `pnpm wrangler:init`, rename the worker in `wrangler.jsonc`, then
@@ -188,4 +194,5 @@ Keep `wrangler.jsonc` out of git; it carries your account-specific database id. 
 - App code: MIT (`LICENSE`).
 - Question content: the licence declared by each pack. The CPACC Mocks pack uses CC BY-SA 4.0 ().
 
-This is a template, not a fork of an upstream app. There is no upstream merge and nothing to rebase.
+This is a template, not a fork of an upstream app. A template copy has no upstream
+history to merge; a fork does. The skin in `src/theme/` is yours in both cases.

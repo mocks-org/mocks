@@ -7,6 +7,7 @@
 	import Seo from '#lib/components/seo/Seo.svelte';
 	import ModuleScoreBars from '#lib/components/layout/portal/ModuleScoreBars.svelte';
 	import ResultQuestionList from '#lib/components/layout/portal/ResultQuestionList.svelte';
+	import SessionHeader from '#theme/SessionHeader.svelte';
 	import { readAttempt } from '#lib/utils/attempt-storage';
 	import { buildResultsView, type ResultsView } from '#lib/utils/results-view';
 
@@ -74,18 +75,18 @@
 <Seo title="Results — {data.exam.title}" index={false} />
 
 <div class="flex min-h-dvh flex-col">
-	<header class="sticky top-0 z-20 border-b border-surface-muted bg-surface-accent">
-		<div
-			class="mx-auto flex min-h-11 w-full max-w-8xl items-center justify-between gap-3 px-2 sm:px-4"
-		>
+	<SessionHeader brand={false}>
+		{#snippet leading()}
 			<p class="min-w-0 truncate text-sm font-semibold text-on-surface">
 				Results
 				<span class="font-normal text-on-surface-muted">· {data.exam.title}</span>
 			</p>
+		{/snippet}
 
+		{#snippet actions()}
 			<Button variant="ghost" size="sm" class="px-2" href={examHref}>Back to exam</Button>
-		</div>
-	</header>
+		{/snippet}
+	</SessionHeader>
 
 	<main
 		id="main-content"

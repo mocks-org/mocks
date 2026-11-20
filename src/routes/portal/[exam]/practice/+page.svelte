@@ -11,15 +11,13 @@
 	import QuestionPlayer from '#lib/components/layout/portal/QuestionPlayer.svelte';
 	import ExamReviewDialog from '#lib/components/layout/portal/ExamReviewDialog.svelte';
 	import PracticeFooter from '#lib/components/layout/portal/PracticeFooter.svelte';
+	import SessionHeader from '#theme/SessionHeader.svelte';
 	import {
 		createPracticeSession,
 		readPracticeSession,
 		writePracticeSession,
 		type StoredPracticeSession
 	} from '#lib/utils/practice-storage';
-	import { site } from '#lib/settings/site';
-
-	const Logo = site.logo;
 
 	// Icons
 	import IconLoadQuestion from '~icons/oxy/database-search';
@@ -194,34 +192,15 @@
 <Seo title="Practice — {data.exam.title}" index={false} />
 
 <div class="flex min-h-dvh flex-col">
-	<header class="sticky top-0 z-20 border-b border-on-surface-muted bg-surface-accent">
-		<Button
-			variant="secondary"
-			size="sm"
-			href="#main-content"
-			class="absolute left-2 z-99 -translate-y-24 rounded px-px focus-visible:translate-y-2"
-		>
-			Skip to main
-		</Button>
-		<div
-			class="mx-auto flex min-h-11 w-full max-w-8xl flex-wrap items-center justify-between gap-2 px-2 py-1 sm:px-4"
-		>
-			{#if session}
-				<div class="flex items-center gap-2">
-					<Logo class="hidden sm:block" aria-hidden="true" />
-					<span class="hidden h-3 w-0.5 bg-primary-accent sm:block"></span>
-
-					<p class=" text-sm font-semibold tracking-tight text-on-surface">Practice Session</p>
-				</div>
-
-				<div class="flex items-center gap-2">
-					<FullscreenButton />
-				</div>
-			{:else}
-				<p class="text-sm font-semibold text-on-surface-muted">Loading practice…</p>
-			{/if}
-		</div>
-	</header>
+	{#if session}
+		<SessionHeader brand title="Practice Session">
+			{#snippet actions()}
+				<FullscreenButton />
+			{/snippet}
+		</SessionHeader>
+	{:else}
+		<SessionHeader brand={false} title="Loading practice…" />
+	{/if}
 
 	<main
 		id="main-content"
