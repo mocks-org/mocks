@@ -1,0 +1,136 @@
+name: PR gate
+
+# Runs when a pull request targets `main`.
+# This workflow's checks are required before the merge button is enabled.
+# Feature branches stay free: only pull requests into `main` are gated.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+
+# A new push to the PR cancels the previous run instead of queueing stale checks.
+concurrency:
+  group: pr-gate-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Quality (svelte-check + lint)
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # `wrangler.jsonc` carries a D1 database id and is not committed.
+      # Materialize it from the committed template so `wrangler types` sees the
+      # expected bindings.
+      - name: Create local Wrangler config
+        run: pnpm wrangler:init
+
+      # `check` keeps the required `wrangler types` --> strip-global-props order
+      # and runs svelte-check with --fail-on-warnings.
+      - name: Svelte check (warnings are errors)
+        run: pnpm check
+
+      - name: Lint (Prettier + ESLint)
+        run: pnpm lint
+
+  content:
+    name: Content (manifest + bank rules)
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The manifest is the only upstream-tracking file. Fail when a pin has no
+      # directory, a directory has no pin, the directory name and exam slug
+      # disagree, or a pack declares a schemaVersion this app does not support.
+      - name: Check the manifest and schema versions
+        run: pnpm content:check
+
+      # Cross-file question rules that lint cannot see: IDs, module
+      # directories, option counts, references, duplicate content, and
+      # placeholders. Covers the demo plus every pinned pack.
+      - name: Validate the content bank
+        run: pnpm bank:validate
+
+  a11y:
+    name: Accessibility (axe-core A/AA/AAA + best practices)
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The committed template has a placeholder D1 id, which is all local
+      # migrations and `wrangler dev` need. The real config stays uncommitted.
+      - name: Create local Wrangler config
+        run: pnpm wrangler:init
+
+      # The portal reads from D1. The Playwright web server runs the built worker
+      # with local bindings, so the local D1 database must be migrated and seeded.
+      - name: Apply local D1 migrations
+        run: pnpm db:migrate:local
+
+      - name: Seed the demo bank
+        run: pnpm db:seed:demo:local
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      # Builds the Cloudflare worker, starts `wrangler dev`, and scans every
+      # route at 320px and 1280px with axe's WCAG and best-practice tags.
+      - name: Run axe accessibility scans
+        run: pnpm test:a11y
+
+      - name: Upload Playwright results
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-a11y
+          path: test-results/
+          retention-days: 7
