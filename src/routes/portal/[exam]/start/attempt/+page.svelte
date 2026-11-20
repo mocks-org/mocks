@@ -10,6 +10,7 @@
 	import FullscreenButton from '#lib/components/layout/portal/FullscreenButton.svelte';
 	import QuestionPlayer from '#lib/components/layout/portal/QuestionPlayer.svelte';
 	import ExamReviewDialog from '#lib/components/layout/portal/ExamReviewDialog.svelte';
+	import SessionHeader from '#theme/SessionHeader.svelte';
 	import {
 		createAttempt,
 		readAttempt,
@@ -18,12 +19,10 @@
 	} from '#lib/utils/attempt-storage';
 	import { clearExamTimer } from '#lib/utils/exam-timer-storage';
 	import { readExamDuration } from '#lib/utils/exam-duration';
-	import { site } from '#lib/settings/site';
 
 	// Icons
 	import IconArrowLeft from '~icons/oxy/arrow-left';
 
-	const Logo = site.logo;
 	let { data }: PageProps = $props();
 
 	const questionsEndpoint = $derived(
@@ -183,53 +182,47 @@
 <Seo title={data.exam.title} index={false} />
 
 <div class="flex min-h-dvh flex-col">
-	<header class="sticky top-0 z-20 border-b border-on-surface-muted bg-surface-accent">
-		<div
-			class="mx-auto flex min-h-11 w-full max-w-8xl flex-wrap items-center justify-between gap-2 px-2 py-1 sm:px-4"
-		>
-			{#if attempt}
-				<div class="flex items-center gap-2">
-					<Logo class="hidden sm:block" aria-hidden="true" />
-					<span class="hidden h-3 w-0.5 bg-primary-accent sm:block"></span>
-					<Button
-						variant="ghost"
-						size="sm"
-						type="button"
-						class="px-2 disabled:opacity-60 disabled:hover:cursor-not-allowed"
-						aria-label="Previous question"
-						disabled={currentIndex === 0}
-						onclick={() => goTo(currentIndex - 1)}
-					>
-						<IconArrowLeft class="size-4" aria-hidden="true" />
-						Previous
-					</Button>
-				</div>
+	{#if attempt}
+		<SessionHeader brand>
+			{#snippet leading()}
+				<Button
+					variant="ghost"
+					size="sm"
+					type="button"
+					class="px-2 disabled:opacity-60 disabled:hover:cursor-not-allowed"
+					aria-label="Previous question"
+					disabled={currentIndex === 0}
+					onclick={() => goTo(currentIndex - 1)}
+				>
+					<IconArrowLeft class="size-4" aria-hidden="true" />
+					Previous
+				</Button>
+			{/snippet}
 
-				<div class="flex items-center gap-2">
-					<ExamTimer
-						durationMinutes={attemptDuration}
-						examSlug={data.exam.slug}
-						running
-						onTimeUp={handleTimeUp}
-					/>
-					<span class="h-3 w-0.5 bg-primary-accent"></span>
-					<FullscreenButton />
-					<Button
-						size="sm"
-						type="button"
-						bind:ref={reviewButton}
-						aria-label="Review questions"
-						aria-haspopup="dialog"
-						onclick={() => (reviewOpen = true)}
-					>
-						Review
-					</Button>
-				</div>
-			{:else}
-				<p class="text-sm font-semibold text-on-surface-muted">Loading questions…</p>
-			{/if}
-		</div>
-	</header>
+			{#snippet actions()}
+				<ExamTimer
+					durationMinutes={attemptDuration}
+					examSlug={data.exam.slug}
+					running
+					onTimeUp={handleTimeUp}
+				/>
+				<span class="h-3 w-0.5 bg-primary-accent" aria-hidden="true"></span>
+				<FullscreenButton />
+				<Button
+					size="sm"
+					type="button"
+					bind:ref={reviewButton}
+					aria-label="Review questions"
+					aria-haspopup="dialog"
+					onclick={() => (reviewOpen = true)}
+				>
+					Review
+				</Button>
+			{/snippet}
+		</SessionHeader>
+	{:else}
+		<SessionHeader brand={false} title="Loading questions…" />
+	{/if}
 
 	<p class="sr-only" role="status" aria-live="polite" aria-atomic="true">{announcement}</p>
 

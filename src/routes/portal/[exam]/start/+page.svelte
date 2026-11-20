@@ -7,12 +7,11 @@
 	import Seo from '#lib/components/seo/Seo.svelte';
 	import ExamTimer from '#lib/components/layout/portal/ExamTimer.svelte';
 	import FullscreenButton from '#lib/components/layout/portal/FullscreenButton.svelte';
+	import SessionHeader from '#theme/SessionHeader.svelte';
 	import { clearAttempt } from '#lib/utils/attempt-storage';
 	import { clearExamTimer } from '#lib/utils/exam-timer-storage';
 	import { readExamDuration } from '#lib/utils/exam-duration';
-	import { site } from '#lib/settings/site';
 
-	const Logo = site.logo;
 	let { data }: PageProps = $props();
 
 	const attemptHref = $derived(resolve('/portal/[exam]/start/attempt', { exam: data.exam.slug }));
@@ -98,22 +97,13 @@
 />
 
 <div class="flex min-h-dvh flex-col">
-	<header class="sticky top-0 border-b border-on-surface-muted bg-surface-accent">
-		<div
-			class="mx-auto flex min-h-11 w-full max-w-8xl flex-wrap items-center justify-between gap-3 px-2 sm:px-4"
-		>
-			<div class="flex items-center gap-2">
-				<Logo aria-hidden="true" />
-				<p class="font-semibold text-on-surface-muted">Exam lobby</p>
-			</div>
-
-			<div class="flex items-center gap-1">
-				<ExamTimer {durationMinutes} examSlug={data.exam.slug} />
-				<span class="hidden h-3 w-0.5 bg-primary-accent lg:block"></span>
-				<FullscreenButton />
-			</div>
-		</div>
-	</header>
+	<SessionHeader title="Exam lobby">
+		{#snippet actions()}
+			<ExamTimer {durationMinutes} examSlug={data.exam.slug} />
+			<span class="hidden h-3 w-0.5 bg-primary-accent lg:block" aria-hidden="true"></span>
+			<FullscreenButton />
+		{/snippet}
+	</SessionHeader>
 
 	<p class="sr-only" role="status" aria-live="polite">{announcement}</p>
 

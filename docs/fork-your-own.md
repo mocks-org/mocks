@@ -20,16 +20,17 @@ see [deploy](./deploy.md), for the pack format see
 
 A fork owner should only need these files:
 
-| Path                       | Purpose                                                                   |
-| -------------------------- | ------------------------------------------------------------------------- |
-| `src/theme/tokens.css`     | palette values and font stacks                                            |
-| `src/theme/Header.svelte`  | header arrangement and styling                                            |
-| `src/theme/Footer.svelte`  | footer arrangement and styling                                            |
-| `src/theme/Home.svelte`    | homepage arrangement and styling                                          |
-| `src/lib/settings/site.ts` | name, logo, metadata, nav, footer, homepage copy, licences, featured exam |
-| `src/routes/(site)/*.svx`  | about and accessibility prose                                             |
-| `content/packs.json`       | which packs are installed, pinned by SHA                                  |
-| `wrangler.jsonc`           | worker name and D1 database name/id (not committed)                       |
+| Path                             | Purpose                                                                   |
+| -------------------------------- | ------------------------------------------------------------------------- |
+| `src/theme/tokens.css`           | palette values and font stacks                                            |
+| `src/theme/Header.svelte`        | header arrangement and styling                                            |
+| `src/theme/Footer.svelte`        | footer arrangement and styling                                            |
+| `src/theme/Home.svelte`          | homepage arrangement and styling                                          |
+| `src/theme/SessionHeader.svelte` | exam lobby, attempt, practice, summary, results and authoring bar         |
+| `src/lib/settings/site.ts`       | name, logo, metadata, nav, footer, homepage copy, licences, featured exam |
+| `src/routes/(site)/*.svx`        | about and accessibility prose                                             |
+| `content/packs.json`             | which packs are installed, pinned by SHA                                  |
+| `wrangler.jsonc`                 | worker name and D1 database name/id (not committed)                       |
 
 Everything under `src/lib/` is app code. If you need to edit it for a routine
 rebrand, that is a bug in the template, not a missing instruction.
@@ -56,6 +57,9 @@ Practical consequences:
 - Links, social profiles, nav items, homepage copy — a `site.ts` edit. No markup
   change, no merge conflict, no matter how many entries.
 - Restyling, reordering or dropping a block — a `src/theme/` edit.
+- The exam-session bar is one component (`src/theme/SessionHeader.svelte`) shared
+  by the lobby, the timed attempt, practice, the summary, results and the
+  authoring tool, so a change there applies to all six at once.
 - Custom markup that carries meaning (a new landmark, a dialog, a form control)
   belongs in `src/lib/`, or open a PR upstream, so it can be fixed for everyone.
 

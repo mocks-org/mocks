@@ -76,7 +76,11 @@ async function settleAnimations(page: Page) {
 const TARGETS: ScanTarget[] = [
 	{ name: 'home', path: '/' },
 	{ name: 'about', path: '/about' },
-	{ name: 'accessibility statement', path: '/accessibility' }
+	{ name: 'accessibility statement', path: '/accessibility' },
+	// Covers the session chrome (`#theme/SessionHeader.svelte`) on the lobby.
+	{ name: 'exam lobby', path: '/portal/cpacc-demo/start' },
+	// The authoring tool uses the same bar without sticky positioning.
+	{ name: 'authoring tool', path: '/author' }
 ];
 
 function formatResults(results: Result[]): string {
