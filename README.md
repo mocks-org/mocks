@@ -28,11 +28,10 @@ nothing to rebase.
    `pnpm exec wrangler d1 create <database-name>` and paste the printed id into
    `wrangler.jsonc`.
 3. `pnpm db:migrate:local`.
-4. Seed the content. This repository already pins the CPACC pack, so
-   `pnpm bank:seed:local` is enough. To start from a clean slate run
-   `pnpm content:remove cpacc` (or edit `content/packs.json` in the browser), add
-   your own pack with `pnpm content:add github:<org>/<pack>`, then seed again. See
-   [content packs](docs/content-packs.md).
+4. Seed the bundled demo with `pnpm db:seed:demo:local`. The template ships no
+   exam content beyond the demo, so `content/packs.json` starts empty. Install a
+   real pack with `pnpm content:add github:<org>/<pack> --ref <sha>`, then run
+   `pnpm bank:seed:local`. See [content packs](docs/content-packs.md).
 5. Edit `src/lib/settings/site.ts` and the `.svx` pages (see
    [make it your own](docs/fork-your-own.md)).
 6. Deploy (see [Deploy](#deploy)), enable Actions in the repository settings, then
@@ -70,7 +69,8 @@ README.md
 CONTRIBUTING.md
 ```
 
-`content/packs.json` pins each pack to a full commit SHA:
+`content:add` pins each installed pack in `content/packs.json` to a full commit
+SHA. The template ships an empty manifest; an installed pack looks like this:
 
 ```json
 {
@@ -81,10 +81,11 @@ CONTRIBUTING.md
 }
 ```
 
-Add, update, remove, and inspect packs from this repository:
+Add, update, remove, and inspect packs from this repository. The template ships
+`content/packs.json` as `{}`, so the first `content:add` creates the entry:
 
 ```sh
-pnpm content:add github:mocks-org/mocks-cpacc
+pnpm content:add github:mocks-org/mocks-cpacc --ref <sha>
 pnpm content:list
 pnpm content:update cpacc
 pnpm content:remove cpacc

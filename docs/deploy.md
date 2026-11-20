@@ -41,16 +41,18 @@ package scripts target the binding, not the database name.
 
 ```sh
 pnpm db:migrate:local
-pnpm bank:seed:local
+pnpm db:seed:demo:local
 pnpm dev
 ```
 
 `bank:seed:local` validates and builds every installed pack and applies the SQL to
-the local D1 database. Add `--exam <slug>` to seed one pack, which is also the way
-to avoid seeding the bundled demo during a production seed. Open
-`/portal/<exam>` to confirm the exam renders.
+the local D1 database. A fresh copy of the template has no installed packs, so start
+with the demo (`pnpm db:seed:demo:local`). After `pnpm content:add`, run
+`pnpm bank:seed:local` — or `--exam <slug>` to seed one pack, which is also the way
+to avoid seeding the bundled demo during a production seed. Open `/portal/<exam>` to
+confirm the exam renders.
 
-Before deploying, run the same checks as CI:
+Before deploying, run what the PR gate runs, plus the unit suite:
 
 ```sh
 pnpm content:check
@@ -135,6 +137,7 @@ D1 content is whatever you last seeded.
 | ------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------- |
 | `wrangler types` fails on a missing binding            | `wrangler.jsonc` is absent. Run `pnpm wrangler:init`.                                                                |
 | `/portal/<exam>` is a 404 or the lobby is empty        | The database was migrated but not seeded. Run `pnpm bank:seed:remote --exam`.                                        |
+| Only the demo exam exists                              | `content/packs.json` is empty or the pack was not seeded. Install it with `pnpm content:add`, then seed it.          |
 | Homepage returns 503                                   | No published exam in D1. Seed a pack with `pnpm bank:seed:remote --exam <exam>`; locally, `pnpm db:seed:demo:local`. |
 | Canonical URLs point at `workers.dev`                  | `site.url` still has the template value. Set it to your origin.                                                      |
 | Sync action fails with "wrote outside `content/`"      | The sync is refusing an unsafe diff. Do not merge; investigate the pack.                                             |

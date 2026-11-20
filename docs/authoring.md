@@ -85,7 +85,7 @@ questions. A pack may contain only an exam bank, only a practice bank, or both.
 | `correctOptionId` | Binds correctness to an option ID, never to a position or label.                           |
 | `explanation`     | The shared lesson, shown after answering. Must not hard-code option numbers.               |
 | `references`      | At least one; see below.                                                                   |
-| `images`          | Must stay `[]` in v0.                                                            |
+| `images`          | Must stay `[]` in v0.                                                                      |
 | `difficulty`      | 1–5 self-assessment for balance, not scoring.                                              |
 | `tags`            | Free-form topic labels for review and future drills.                                       |
 | `status`          | `draft`, `review`, `published`, or `retired`.                                              |

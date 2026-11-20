@@ -30,9 +30,12 @@ a bug in the template, not a missing instruction.
 4. For deployment, create a D1 database and paste its id into `wrangler.jsonc`
    (see [deploy](./deploy.md)). The placeholder id is enough for local work.
 5. Apply migrations: `pnpm db:migrate:local`.
+6. Seed the bundled demo: `pnpm db:seed:demo:local`, then `pnpm dev` and open
+   `/portal/cpacc-demo` to confirm the app runs before you add content.
 
 The demo pack stays in the repository. It powers the a11y CI job
-and gives `/` something to render before you seed a real exam.
+and gives `/` something to render before you seed a real exam. `content/packs.json`
+starts empty; the template ships no exam content beyond the demo.
 
 ## 2. Rebrand
 
@@ -76,11 +79,15 @@ A pack is installed by pinning it in `content/packs.json` and copying its files 
 `content/<exam>/`. The CLI does both, and validates the pack first:
 
 ```sh
-pnpm content:add github:<owner>/<pack>
+pnpm content:add github:<owner>/<pack> --ref <sha>
 pnpm content:list
 pnpm bank:validate
 pnpm bank:seed:local
 ```
+
+Pass `--ref <sha>` when you want an exact release; without it the command takes the
+newest tag and pins the commit it points at. `content:add` does not seed a database,
+so run `pnpm bank:seed:local` (or `:remote` when deployed) afterwards.
 
 To move an installed pack to a newer release, run `pnpm content:update <exam>`.
 With no argument it updates every pinned pack. Both commands accept `--dry-run`.
@@ -148,8 +155,9 @@ file, close the pull request: that is a failed sync, not something to keep.
 
 - [ ] `pnpm install` and `pnpm wrangler:init`
 - [ ] D1 database created, id pasted into `wrangler.jsonc`
-- [ ] `pnpm db:migrate:local` and `pnpm bank:seed:local`
-- [ ] Packs chosen, pinned, and validated with `pnpm content:check`
+- [ ] `pnpm db:migrate:local`, demo seeded with `pnpm db:seed:demo:local`
+- [ ] Packs chosen, installed with `pnpm content:add … --ref <sha>`, seeded, and
+      validated with `pnpm content:check`
 - [ ] `site.ts` edited, `site.url` matches the deployed origin
 - [ ] `.svx` pages replaced
 - [ ] Footer licence links match the packs you actually ship

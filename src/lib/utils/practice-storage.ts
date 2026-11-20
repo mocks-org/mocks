@@ -1,8 +1,8 @@
 import type { PracticeOption, PracticeQuestion } from '#lib/domain/types';
 
 /**
- * Ephemeral practice state for one tab. Practice is client-side only in v0, 
- * like the exam. `answers` holds checked answers only: a selection that was 
+ * Ephemeral practice state for one tab. Practice is client-side only in v0,
+ * like the exam. `answers` holds checked answers only: a selection that was
  * never checked is not an answer and counts as skipped
  */
 export interface StoredPracticeSession {

@@ -5,13 +5,18 @@ one exam. The app ships no official questions of its own. It bundles a small dem
 pack for development and the accessibility gate, and installs every real exam from
 the pinned manifest in `content/packs.json`.
 
+The template repository starts with an empty manifest (`{}`), so a fresh copy
+renders the demo exam only. Every pack is installed explicitly with
+`pnpm content:add`, which copies the files and records the pin.
+
 This page covers the manifest, the pack layout, what a sync is allowed to write,
 and the schema-version contract. For the question rules themselves see
 [authoring](./authoring.md), for installing packs in your own deployment see [make it your own](./fork-your-own.md).
 
 ## How the app finds a pack
 
-`content/packs.json` maps an exam slug to a pinned source:
+`content/packs.json` maps an exam slug to a pinned source. An installed pack looks
+like this:
 
 ```json
 {
@@ -40,6 +45,10 @@ exam slug is `cpacc-demo`, and the demo directory keeps that name for continuity
 
 The content directory is build-time input. The running app reads questions from
 D1, so installing a pack is followed by `pnpm bank:seed:local` (or `:remote`).
+Removing a pack has the same split: `pnpm content:remove <exam>` deletes the files
+and the pin, but the rows stay in D1 until you reseed that database. Deleting a
+local `.wrangler/state/v3/d1` and re-running `pnpm db:migrate:local` plus
+`pnpm db:seed:demo:local` gives a clean local slate.
 
 ## Pack layout
 
@@ -215,17 +224,25 @@ The full field-level rules are in [authoring](./authoring.md).
    [workflow](https://github.com/mocks-org/mocks-cpacc/blob/main/.github/workflows/validate.yml)
    for a working example. A private app repository needs an explicit
    `MOCKS_APP_REPOSITORY` variable and a read-only `MOCKS_APP_TOKEN` secret, since
-   another repository's `GITHUB_TOKEN` cannot read it.
+   another repository's `GITHUB_TOKEN` cannot read it. `MOCKS_APP_REF` (a full
+   commit SHA) pins the app checkout; the example workflow carries a fallback SHA,
+   so move both together when you re-pin the app. The SHA must exist in the
+   repository named by `MOCKS_APP_REPOSITORY`: a repository generated from a
+   template starts its own history, so template SHAs do not carry over.
 
 6. **Tag a release** (`v0.2.0`, …) and push the tag. The tag is a human label; the
    app pins the SHA it points at.
 7. **Install it in the app**:
 
    ```sh
-   pnpm content:add github:<owner>/<pack>
+   pnpm content:add github:<owner>/<pack> --ref <sha>
    pnpm bank:validate
    pnpm bank:seed:local
    ```
+
+   `--ref <sha>` installs an exact release; without it, `content:add` takes the
+   newest tag and records the commit it points at. Either way the manifest ends up
+   with a full SHA, so the install is reproducible.
 
    Commit `content/packs.json` and `content/<exam>/**` together. If a sync from a
    local checkout has to predate the remote push, pass
@@ -263,12 +280,14 @@ a config as a failed sync, not as something to keep.
 
 ## Troubleshooting
 
-| Message                                                             | Fix                                                                |
-| ------------------------------------------------------------------- | ------------------------------------------------------------------ |
-| `pins "x", but content/x/ does not exist`                           | Run `pnpm content:update x`, or remove the entry.                  |
-| `content/x/ is not pinned in content/packs.json`                    | Add it with `pnpm content:add`, or delete the directory.           |
-| `The directory name and manifest key must match the exam slug`      | Rename the directory or change `exam.json`/the manifest key.       |
-| `uses schemaVersion N, but this app supports …`                     | Use a supported schema version, or update the app.                 |
-| `Question ID … is already used by …`                                | Two packs share an ID prefix. Make the slugs and prefixes unique.  |
-| `Pack contains …, which is outside the allowlist`                   | Move app code, fixtures, or notes out of the pack repository root. |
-| `The sync wrote outside content/. Refusing to open a pull request.` | A sync bug or a non-pack repository. Do not merge the PR.          |
+| Message                                                             | Fix                                                                                                   |
+| ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `pins "x", but content/x/ does not exist`                           | Run `pnpm content:add … --ref <sha>` (new), `pnpm content:update x` (installed), or remove the entry. |
+| `content/x/ is not pinned in content/packs.json`                    | Add it with `pnpm content:add`, or delete the directory.                                              |
+| A pack is still listed in `pnpm dev` after removing it              | D1 still holds its rows. Reseed the database, or delete `.wrangler/state/v3/d1` and re-migrate.       |
+| A freshly added pack does not appear in the app                     | `content:add` copies files but does not seed. Run `pnpm bank:seed:local --exam <slug>`.               |
+| `The directory name and manifest key must match the exam slug`      | Rename the directory or change `exam.json`/the manifest key.                                          |
+| `uses schemaVersion N, but this app supports …`                     | Use a supported schema version, or update the app.                                                    |
+| `Question ID … is already used by …`                                | Two packs share an ID prefix. Make the slugs and prefixes unique.                                     |
+| `Pack contains …, which is outside the allowlist`                   | Move app code, fixtures, or notes out of the pack repository root.                                    |
+| `The sync wrote outside content/. Refusing to open a pull request.` | A sync bug or a non-pack repository. Do not merge the PR.                                             |

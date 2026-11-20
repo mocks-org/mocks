@@ -10,7 +10,7 @@
 	"name": "mocks",
 	"compatibility_date": "2026-11-04",
 	"compatibility_flags": ["nodejs_als"],
-	// The SvelteKit Cloudflare adapter >=9.0.0 sets the worker entry and asset 
+	// The SvelteKit Cloudflare adapter >=9.0.0 sets the worker entry and asset
 	// directory automatically during `pnpm build`. DO NOT add `main` here.
 	"assets": {
 		"binding": "ASSETS",
