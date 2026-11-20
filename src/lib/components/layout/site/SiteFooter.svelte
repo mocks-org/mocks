@@ -66,23 +66,25 @@
 			<span class="font-semibold">Disclaimer:</span>
 			{site.disclaimer}
 		</p>
-		<small class="inline-flex items-center gap-2 text-[12px] font-semibold">
-			{#each site.licenseLinks as license, index (license.label)}
-				{#if index > 0}<span class="size-1 rounded bg-on-surface-muted"></span>{/if}
-				{#if license.prefix}{license.prefix}{/if}
-				<ExternalLink href={license.href}>{license.label}</ExternalLink>
-			{/each}
-		</small>
-		{#if site.social.length > 0}
-			<nav aria-label={`${site.name} social links`}>
-				<small class="inline-flex items-center gap-2 text-[12px] font-semibold">
-					{#each site.social as profile, index (profile.label)}
-						{#if index > 0}<span class="size-1 rounded bg-on-surface-muted"></span>{/if}
-						<ExternalLink href={profile.href}>{profile.label}</ExternalLink>
-					{/each}
-				</small>
-			</nav>
-		{/if}
+		<div class="flex flex-wrap items-center justify-between gap-2">
+			<small class="inline-flex items-center gap-2 text-[12px] font-semibold">
+				{#each site.licenseLinks as license, index (license.label)}
+					{#if index > 0}<span class="size-1 rounded bg-on-surface-muted"></span>{/if}
+					{#if license.prefix}{license.prefix}{/if}
+					<ExternalLink href={license.href}>{license.label}</ExternalLink>
+				{/each}
+			</small>
+			{#if site.social.length > 0}
+				<nav aria-label={`${site.name} social links`}>
+					<small class="inline-flex items-center gap-2 text-[12px] font-semibold">
+						{#each site.social as profile, index (profile.label)}
+							{#if index > 0}<span class="size-1 rounded bg-on-surface-muted"></span>{/if}
+							<ExternalLink href={profile.href}>{profile.label}</ExternalLink>
+						{/each}
+					</small>
+				</nav>
+			{/if}
+		</div>
 	</div>
 </div>
 {#if site.credit.enabled}

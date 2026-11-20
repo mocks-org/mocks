@@ -70,7 +70,7 @@ export const site = {
 	] as const satisfies readonly SiteNavLink[],
 
 	social: [
-		{ label: 'GitHub', href: 'https://github.com/oxypteros' }
+		{ label: 'GitHub', href: 'https://github.com/mocks-org' }
 	] as const satisfies readonly SiteSocialLink[],
 
 	disclaimer:
@@ -84,12 +84,12 @@ export const site = {
 		{
 			prefix: 'Code:',
 			label: 'MIT',
-			href: 'https://github.com/oxypteros/mocks/blob/main/LICENSE'
+			href: 'https://github.com/mocks-org/mocks/blob/main/LICENSE'
 		},
 		{
 			prefix: 'Content:',
 			label: 'CC BY-SA 4.0',
-			href: 'https://github.com/oxypteros/mocks-CPACC/blob/main/LICENSE'
+			href: 'https://github.com/mocks-org/mocks-cpacc/blob/main/LICENSE'
 		}
 	] as const satisfies readonly SiteExternalLink[],
 
