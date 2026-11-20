@@ -240,9 +240,15 @@ node ../mocks/scripts/bank/length-audit.ts .      # add --strict to fail on find
 node ../mocks/scripts/bank/link-check.ts .        # network; checks reference URLs
 ```
 
+`link-check` fails on a 404/410 and on a host that no longer resolves. Timeouts
+and 5xx answers are retried and then reported as unverified without failing,
+because a blocked CI runner does not prove the page is gone; pass `--strict` to
+fail on those as well, or `--lenient` to never fail. Run it locally before
+editing a reference that CI could not verify.
+
 A pack repository should run the first two on every pull request and the link check
 on a schedule. See the CPACC pack's
-[workflow](https://github.com/oxypteros/mocks-CPACC/blob/main/.github/workflows/validate.yml).
+[workflow](https://github.com/mocks-org/mocks-cpacc/blob/main/.github/workflows/validate.yml).
 
 The `/author` route is a client-only editor for the same shape: it keeps drafts in
 `localStorage` and exports question or bank JSON. Copy the exported files into a

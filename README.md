@@ -125,7 +125,7 @@ documented in [authoring](docs/authoring.md).
   node ../mocks/scripts/bank/link-check.ts .      # network
   ```
 
-- The pack repository's CI runs the first two on every pull request and the link check weekly, against a pinned app commit.
+- The pack repository's CI runs the first two on every pull request and the link check weekly, against a pinned app commit. `link-check` fails on 404/410 or a dead host; timeouts are retried and only warn, so a blocked runner cannot fail the weekly job.
 
 - Release the pack with a tag (`v0.1.0`, …), then run `pnpm content:update <exam>` here. The manifest diff is the release record.
 
