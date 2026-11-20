@@ -1,6 +1,6 @@
 # Mocks
 
-An unofficial, non-commercial, free practice-exam app for multiple choice based exams/quizs, built with SvelteKit and deployed to Cloudflare Workers. This repository is both the app and a template: exams live in separately versioned **content packs**, so a fork can add or replace content without touching app code.
+An unofficial, non-commercial, free practice-exam app for multiple choice based exams/quizs, built with SvelteKit and deployed to Cloudflare Workers. Exams live in separately versioned **content packs**, so a fork can add or replace content without touching app code. The look lives in `src/theme/`, so a fork can restyle without blocking app updates.
 
 > Mocks is independent and non-commercial. All certification names and trademarks are property of their respective owners. Scores are practice feedback does not constitute, official results.
 
@@ -18,35 +18,52 @@ An unofficial, non-commercial, free practice-exam app for multiple choice based 
 
 - [Content packs](docs/content-packs.md) — manifest, pack layout, allowlist, schema versions
 - [Make it your own](docs/fork-your-own.md) — the edit surface, rebranding, browser-editable manifest
-- [Upgrading a fork](UPGRADING.md) — merge rules and theme patches for repositories tracking upstream
+- [Upgrading a fork](docs/upgrading.md) — merge rules and theme patches for repositories tracking upstream
 - [Authoring questions](docs/authoring.md) — question shape, options, references, review
 - [Deploy to Cloudflare](docs/deploy.md) — D1 setup, migrations, seeding, Actions
 
-## Use this template
+## Create your copy
 
-Click **Use this template → Create a new repository**, then clone your copy. A
-template copy starts a fresh history, so it cannot merge upstream later: that is
-the right choice when you intend to replace the app.
+This is a normal repository, not a one-off template. **Fork** it, or **clone** it
+and point `origin` at your own remote. Either way your copy shares history with
+`mocks-org/mocks`, so `git merge upstream/main` brings accessibility and logic
+fixes while your skin in `src/theme/` stays yours.
 
-If you want to keep receiving accessibility and logic fixes while keeping your own
-look, **fork** instead. The skin lives in `src/theme/`, core fixes land in
-`src/lib/` and merge cleanly into a fork. See
-[make it your own](docs/fork-your-own.md#5-keep-it-updated).
+```sh
+# after forking on GitHub
+git clone git@github.com:<you>/mocks.git
+cd mocks
+git remote add upstream https://github.com/mocks-org/mocks.git
+pnpm install
+```
 
-1. `pnpm install`.
-2. `pnpm wrangler:init`, rename the worker in `wrangler.jsonc`, then
+If you clone upstream directly and push to a new remote, `origin` already points
+at `mocks-org/mocks`; merge `origin/main` instead of `upstream/main`.
+
+1. `pnpm wrangler:init`, rename the worker in `wrangler.jsonc`, then
    `pnpm exec wrangler d1 create <database-name>` and paste the printed id into
    `wrangler.jsonc`.
-3. `pnpm db:migrate:local`.
-4. Seed the bundled demo with `pnpm db:seed:demo:local`. The template ships no
+2. `pnpm db:migrate:local`.
+3. Seed the bundled demo with `pnpm db:seed:demo:local`. The repository ships no
    exam content beyond the demo, so `content/packs.json` starts empty. Install a
    real pack with `pnpm content:add github:<org>/<pack> --ref <sha>`, then run
    `pnpm bank:seed:local`. See [content packs](docs/content-packs.md).
-5. Edit `src/lib/settings/site.ts` and the `.svx` pages (see
-   [make it your own](docs/fork-your-own.md)).
-6. Deploy (see [Deploy](#deploy)), enable Actions in the repository settings, then
+4. Edit `src/theme/` for the look, and `src/lib/settings/site.ts` plus the `.svx`
+   pages for the content (see [make it your own](docs/fork-your-own.md)).
+5. Deploy (see [Deploy](#deploy)), enable Actions in the repository settings, then
    run **Actions → Sync content → Run workflow** once to confirm the pull-request
    flow.
+
+Keeping up to date is a normal merge:
+
+```sh
+git fetch upstream
+git merge upstream/main     # resolve src/theme conflicts in your favour
+```
+
+The rules — what to take from upstream, what never to take, and how the lockfile
+and migrations are handled — are in
+[keep it updated](docs/fork-your-own.md#5-keep-it-updated).
 
 ## Quick start
 
@@ -80,7 +97,7 @@ CONTRIBUTING.md
 ```
 
 `content:add` pins each installed pack in `content/packs.json` to a full commit
-SHA. The template ships an empty manifest; an installed pack looks like this:
+SHA. The repository ships an empty manifest; an installed pack looks like this:
 
 ```json
 {
@@ -91,7 +108,7 @@ SHA. The template ships an empty manifest; an installed pack looks like this:
 }
 ```
 
-Add, update, remove, and inspect packs from this repository. The template ships
+Add, update, remove, and inspect packs from this repository. It ships
 `content/packs.json` as `{}`, so the first `content:add` creates the entry:
 
 ```sh
@@ -133,49 +150,54 @@ documented in [authoring](docs/authoring.md).
 
 - The pack repository's CI runs the first two on every pull request and the link check weekly, against a pinned app commit. `link-check` fails on 404/410 or a dead host; timeouts are retried and only warn, so a blocked runner cannot fail the weekly job.
 
-- Release the pack with a tag (`v0.1.0`, …), then run `pnpm content:update <exam>` here. The manifest diff is the release record.
+- Release the pack with a tag (`v0.1.0`, …), then run `pnpm content:update <exam>` in your app repository. The manifest diff is the release record.
 
 ## What to edit in your copy
 
-A template user should only need:
+A fork owner should only need:
 
 | Path                       | Purpose                                                                   |
 | -------------------------- | ------------------------------------------------------------------------- |
+| `src/theme/**`             | palette, fonts, header, footer, homepage and exam-bar layout              |
 | `src/lib/settings/site.ts` | name, logo, metadata, nav, footer, homepage copy, licences, featured exam |
 | `src/routes/(site)/*.svx`  | about and accessibility prose                                             |
 | `content/packs.json`       | which packs are installed, pinned by SHA                                  |
 | `wrangler.jsonc`           | worker name and D1 database name/id                                       |
 
-Rebranding is a single-file change: edit `name`, `tagline`, `description`, `url` (your
-deployed origin, used for canonical URLs), `locale`, `featuredExam`, the link lists,
-and `social` in `site.ts`. The header, footer, document head, homepage, and authoring
+Look changes stay in `src/theme/` (`tokens.css`, `Header.svelte`, `Footer.svelte`,
+`Home.svelte`, `SessionHeader.svelte`); `pnpm theme:check` refuses accessibility
+semantics there so fixes in `src/lib/` keep merging cleanly. Rebranding is a
+single-file change: edit `name`, `tagline`, `description`, `url` (your deployed
+origin, used for canonical URLs), `locale`, `featuredExam`, the link lists, and
+`social` in `site.ts`. The header, footer, document head, homepage, and authoring
 defaults all read from it. Then replace the prose in the `.svx` pages.
 
-Everything else is app code. If that list grows, treat it as a bug in the template, not as documentation to add.
+Everything else is app code. If that list grows, treat it as a bug in the upstream app, not as documentation to add.
 
 [Make it your own](docs/fork-your-own.md) walks through the same surface step by
 step, including editing `content/packs.json` in the browser.
 
 ## Commands
 
-| Command                   | What it does                                        |
-| ------------------------- | --------------------------------------------------- |
-| `pnpm dev`                | Vite dev server                                     |
-| `pnpm build`              | generate worker types, strip globals, build         |
-| `pnpm preview`            | run the built worker locally on port 4173           |
-| `pnpm check`              | svelte-check with warnings as errors                |
-| `pnpm lint`               | Prettier check + ESLint                             |
-| `pnpm test:unit`          | Vitest                                              |
-| `pnpm test:e2e`           | Playwright (builds and previews)                    |
-| `pnpm test:a11y`          | axe scans at 320px and 1280px                       |
-| `pnpm bank:validate`      | validate the demo and every pinned pack             |
-| `pnpm bank:build`         | write `build/bank/<bank>.json` and `.sql`           |
-| `pnpm bank:seed:local`    | build and apply SQL to local D1                     |
-| `pnpm content:add`        | fetch, validate, install a pack, write the manifest |
-| `pnpm content:update`     | move a pack to a newer commit                       |
-| `pnpm content:list`       | show pinned packs and question counts               |
-| `pnpm db:migrate:local`   | apply Drizzle migrations                            |
-| `pnpm db:seed:demo:local` | seed the bundled demo exam                          |
+| Command                   | What it does                                             |
+| ------------------------- | -------------------------------------------------------- |
+| `pnpm dev`                | Vite dev server                                          |
+| `pnpm build`              | generate worker types, strip globals, build              |
+| `pnpm preview`            | run the built worker locally on port 4173                |
+| `pnpm check`              | svelte-check with warnings as errors, plus `theme:check` |
+| `pnpm theme:check`        | reject aria/role/landmark markup in `src/theme/`         |
+| `pnpm lint`               | Prettier check + ESLint                                  |
+| `pnpm test:unit`          | Vitest                                                   |
+| `pnpm test:e2e`           | Playwright (builds and previews)                         |
+| `pnpm test:a11y`          | axe scans at 320px and 1280px                            |
+| `pnpm bank:validate`      | validate the demo and every pinned pack                  |
+| `pnpm bank:build`         | write `build/bank/<bank>.json` and `.sql`                |
+| `pnpm bank:seed:local`    | build and apply SQL to local D1                          |
+| `pnpm content:add`        | fetch, validate, install a pack, write the manifest      |
+| `pnpm content:update`     | move a pack to a newer commit                            |
+| `pnpm content:list`       | show pinned packs and question counts                    |
+| `pnpm db:migrate:local`   | apply Drizzle migrations                                 |
+| `pnpm db:seed:demo:local` | seed the bundled demo exam                               |
 
 ## Deploy
 
@@ -187,12 +209,12 @@ See [deploy](docs/deploy.md) for the full walkthrough. In short:
 4. `pnpm bank:seed:remote --exam <exam>` for each pack you want live (not the demo).
 5. `pnpm build`, then `pnpm exec wrangler deploy`.
 
-Keep `wrangler.jsonc` out of git; it carries your account-specific database id. `wrangler.example.jsonc` is the committed template.
+Keep `wrangler.jsonc` out of git; it carries your account-specific database id. `wrangler.example.jsonc` is the committed example.
 
 ## Licence
 
 - App code: MIT (`LICENSE`).
-- Question content: the licence declared by each pack. The CPACC Mocks pack uses CC BY-SA 4.0 ().
+- Question content: the licence declared by each pack. The CPACC Mocks pack uses [CC BY-SA 4.0](https://github.com/mocks-org/mocks-cpacc/blob/main/LICENSE).
 
-This is a template, not a fork of an upstream app. A template copy has no upstream
-history to merge; a fork does. The skin in `src/theme/` is yours in both cases.
+This repository is the upstream app. Fork or clone it, keep `src/theme/` as your
+own skin, and merge `upstream/main` for fixes.

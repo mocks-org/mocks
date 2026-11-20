@@ -5,7 +5,7 @@ one exam. The app ships no official questions of its own. It bundles a small dem
 pack for development and the accessibility gate, and installs every real exam from
 the pinned manifest in `content/packs.json`.
 
-The template repository starts with an empty manifest (`{}`), so a fresh copy
+The upstream repository starts with an empty manifest (`{}`), so a fresh fork
 renders the demo exam only. Every pack is installed explicitly with
 `pnpm content:add`, which copies the files and records the pin.
 
@@ -227,8 +227,9 @@ The full field-level rules are in [authoring](./authoring.md).
    another repository's `GITHUB_TOKEN` cannot read it. `MOCKS_APP_REF` (a full
    commit SHA) pins the app checkout; the example workflow carries a fallback SHA,
    so move both together when you re-pin the app. The SHA must exist in the
-   repository named by `MOCKS_APP_REPOSITORY`: a repository generated from a
-   template starts its own history, so template SHAs do not carry over.
+   repository named by `MOCKS_APP_REPOSITORY`: a fork shares history with upstream,
+   but a repository created from an older template copy does not, so upstream app
+   SHAs will not resolve there.
 
 6. **Tag a release** (`v0.2.0`, …) and push the tag. The tag is a human label; the
    app pins the SHA it points at.

@@ -1,7 +1,7 @@
 # Deploy to Cloudflare
 
 The app is a SvelteKit Worker with a D1 database. You need a Cloudflare account,
-Node 26, pnpm 12, and a repository created from this template. The local D1
+Node 26, pnpm 12, and a fork or clone of this repository. The local D1
 database works without an account; only the remote steps below need one.
 
 ## 1. Create the local config
@@ -12,7 +12,7 @@ pnpm wrangler:init       # copies wrangler.example.jsonc to wrangler.jsonc
 ```
 
 `wrangler.jsonc` is gitignored because it carries your account-specific database
-id. `wrangler.example.jsonc` is the committed template.
+id. `wrangler.example.jsonc` is the committed example.
 
 Edit `wrangler.jsonc`:
 
@@ -46,7 +46,7 @@ pnpm dev
 ```
 
 `bank:seed:local` validates and builds every installed pack and applies the SQL to
-the local D1 database. A fresh copy of the template has no installed packs, so start
+the local D1 database. A fresh fork has no installed packs, so start
 with the demo (`pnpm db:seed:demo:local`). After `pnpm content:add`, run
 `pnpm bank:seed:local` — or `--exam <slug>` to seed one pack, which is also the way
 to avoid seeding the bundled demo during a production seed. Open `/portal/<exam>` to
@@ -139,7 +139,7 @@ D1 content is whatever you last seeded.
 | `/portal/<exam>` is a 404 or the lobby is empty        | The database was migrated but not seeded. Run `pnpm bank:seed:remote --exam`.                                        |
 | Only the demo exam exists                              | `content/packs.json` is empty or the pack was not seeded. Install it with `pnpm content:add`, then seed it.          |
 | Homepage returns 503                                   | No published exam in D1. Seed a pack with `pnpm bank:seed:remote --exam <exam>`; locally, `pnpm db:seed:demo:local`. |
-| Canonical URLs point at `workers.dev`                  | `site.url` still has the template value. Set it to your origin.                                                      |
+| Canonical URLs point at `workers.dev`                  | `site.url` still has the upstream default. Set it to your origin.                                                    |
 | Sync action fails with "wrote outside `content/`"      | The sync is refusing an unsafe diff. Do not merge; investigate the pack.                                             |
 | Remote migration succeeds but deploy uses old bindings | Seed and deploy from the same `wrangler.jsonc`, then redeploy.                                                       |
 

@@ -1,8 +1,9 @@
 # Upgrading a fork
 
-This file is for repositories that track `mocks` as **upstream** instead of
-copying it once. A template copy starts a fresh history and has nothing to merge;
-see [make it your own](./docs/fork-your-own.md#5-keep-it-updated).
+This file is for repositories that forked `mocks` as **upstream**. A fork shares
+`mocks-org/mocks`'s history, so `git merge upstream/main` is a normal merge; a
+repository created from an old template copy has nothing to merge.
+See [make it your own](./fork-your-own.md#5-keep-it-updated).
 
 ## What merges cleanly
 
