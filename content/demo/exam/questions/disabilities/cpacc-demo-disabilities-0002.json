@@ -1,0 +1,49 @@
+{
+	"id": "cpacc-demo-disabilities-0002",
+	"module": "disabilities",
+	"type": "single",
+	"stem": "Which term describes a difference in body function or structure, such as a visual or mobility difference?",
+	"options": [
+		{
+			"id": "impairment",
+			"text": "Impairment",
+			"shortLabel": "Impairment",
+			"rationale": "A difference in body function or structure."
+		},
+		{
+			"id": "disability",
+			"text": "Disability",
+			"shortLabel": "Disability",
+			"rationale": "The interaction between a person and barriers in society."
+		},
+		{
+			"id": "barrier",
+			"text": "Barrier",
+			"shortLabel": "Barrier",
+			"rationale": "An obstacle in the environment or society."
+		},
+		{
+			"id": "accommodation",
+			"text": "Accommodation",
+			"shortLabel": "Accommodation",
+			"rationale": "A change that removes a barrier for a person."
+		}
+	],
+	"correctOptionId": "impairment",
+	"explanation": "Impairment refers to a difference in body function or structure. Disability describes the interaction between that difference and barriers in the environment.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: impairment and disability",
+			"url": "https://example.org/demo/impairment"
+		}
+	],
+	"images": [],
+	"difficulty": 1,
+	"tags": ["models"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

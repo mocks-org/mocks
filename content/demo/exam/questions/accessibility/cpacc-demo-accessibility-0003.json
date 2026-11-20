@@ -1,0 +1,49 @@
+{
+	"id": "cpacc-demo-accessibility-0003",
+	"module": "accessibility",
+	"type": "single",
+	"stem": "Which practice most directly helps keyboard-only users?",
+	"options": [
+		{
+			"id": "visible-focus",
+			"text": "Showing a visible focus indicator",
+			"shortLabel": "Visible focus",
+			"rationale": "Shows keyboard users where they are on the page."
+		},
+		{
+			"id": "autoplay",
+			"text": "Starting media automatically",
+			"shortLabel": "Autoplay",
+			"rationale": "Can distract users and does not help keyboard navigation."
+		},
+		{
+			"id": "small-targets",
+			"text": "Using very small click targets",
+			"shortLabel": "Small targets",
+			"rationale": "Makes pointing and keyboard focus harder to use."
+		},
+		{
+			"id": "color-only",
+			"text": "Using color alone to show status",
+			"shortLabel": "Color only",
+			"rationale": "Excludes users who cannot perceive the color difference."
+		}
+	],
+	"correctOptionId": "visible-focus",
+	"explanation": "A visible focus indicator shows keyboard users where they are on the page as they move through interactive controls.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: keyboard accessibility",
+			"url": "https://example.org/demo/keyboard"
+		}
+	],
+	"images": [],
+	"difficulty": 1,
+	"tags": ["keyboard"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

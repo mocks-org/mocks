@@ -1,0 +1,49 @@
+{
+	"id": "cpacc-demo-practice-docs-code-0003",
+	"module": "docs-code",
+	"type": "single",
+	"stem": "Which heading structure is best for a documentation page?",
+	"options": [
+		{
+			"id": "single-h1",
+			"text": "One h1 for the page title, then h2 and h3 in order",
+			"shortLabel": "One h1, ordered",
+			"rationale": "A single h1 and ordered subheadings form a usable outline."
+		},
+		{
+			"id": "all-h2",
+			"text": "Make every heading an h2",
+			"shortLabel": "All h2",
+			"rationale": "Flattening the outline removes the page structure."
+		},
+		{
+			"id": "skip-levels",
+			"text": "Skip from h1 to h4 for visual size",
+			"shortLabel": "Skip levels",
+			"rationale": "Skipping levels breaks the outline for assistive technology."
+		},
+		{
+			"id": "bold-text",
+			"text": "Use bold paragraphs instead of headings",
+			"shortLabel": "Bold text",
+			"rationale": "Bold text is not announced as a heading."
+		}
+	],
+	"correctOptionId": "single-h1",
+	"explanation": "One h1 for the page title, then h2 and h3 in order, gives screen-reader users a navigable outline and keeps the document structure meaningful.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: heading structure",
+			"url": "https://example.org/demo/headings"
+		}
+	],
+	"images": [],
+	"difficulty": 1,
+	"tags": ["structure"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

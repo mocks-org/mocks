@@ -1,0 +1,49 @@
+{
+	"id": "cpacc-demo-accessibility-0002",
+	"module": "accessibility",
+	"type": "single",
+	"stem": "What does WCAG stand for?",
+	"options": [
+		{
+			"id": "wcag",
+			"text": "Web Content Accessibility Guidelines",
+			"shortLabel": "WCAG",
+			"rationale": "The correct expansion of WCAG."
+		},
+		{
+			"id": "wca-guide",
+			"text": "Web Compliance Accessibility Guide",
+			"shortLabel": "Compliance guide",
+			"rationale": "Not the correct expansion."
+		},
+		{
+			"id": "wca-group",
+			"text": "Wide Content Access Group",
+			"shortLabel": "Access group",
+			"rationale": "Not the correct expansion."
+		},
+		{
+			"id": "wcag-guarantee",
+			"text": "Web Content Access Guarantee",
+			"shortLabel": "Access guarantee",
+			"rationale": "Not the correct expansion."
+		}
+	],
+	"correctOptionId": "wcag",
+	"explanation": "WCAG is the Web Content Accessibility Guidelines, published by the W3C Web Accessibility Initiative.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: WCAG overview",
+			"url": "https://example.org/demo/wcag"
+		}
+	],
+	"images": [],
+	"difficulty": 1,
+	"tags": ["wcag"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

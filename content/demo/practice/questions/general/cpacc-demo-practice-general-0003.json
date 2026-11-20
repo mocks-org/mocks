@@ -1,0 +1,37 @@
+{
+	"id": "cpacc-demo-practice-general-0003",
+	"module": "general",
+	"type": "single",
+	"stem": "Text alternatives are only needed for images that contain text.",
+	"options": [
+		{
+			"id": "true",
+			"text": "True",
+			"shortLabel": "True",
+			"rationale": "Meaningful images need alternatives even without text."
+		},
+		{
+			"id": "false",
+			"text": "False",
+			"shortLabel": "False",
+			"rationale": "Correct: any meaningful image needs a text alternative."
+		}
+	],
+	"correctOptionId": "false",
+	"explanation": "Every meaningful image needs a text alternative, whether or not it contains text. Purely decorative images are the exception and should be hidden from assistive technology.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: text alternatives",
+			"url": "https://example.org/demo/alt-text"
+		}
+	],
+	"images": [],
+	"difficulty": 1,
+	"tags": ["images"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}
