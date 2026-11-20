@@ -4,6 +4,10 @@ An unofficial, non-commercial, free practice-exam app for multiple choice based 
 
 > Mocks is independent and non-commercial. All certification names and trademarks are property of their respective owners. Scores are practice feedback does not constitute, official results.
 
+---
+
+[![Sync content](https://github.com/mocks-org/mocks/actions/workflows/sync-content.yml/badge.svg)](https://github.com/mocks-org/mocks/actions/workflows/sync-content.yml) [![PR gate](https://github.com/mocks-org/mocks/actions/workflows/pr-gate.yml/badge.svg?branch=main&event=pull_request)](https://github.com/mocks-org/mocks/actions/workflows/pr-gate.yml)
+
 ## Requirements
 
 - Node 26
