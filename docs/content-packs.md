@@ -1,10 +1,71 @@
 # Content packs
 
-A content pack is a repository that holds the questions and exam configuration for one exam. The app ships no official questions of its own. It bundles a small demo pack for development and the accessibility gate, and installs every real exam from the pinned manifest in `content/packs.json`.
+A content pack is a repository that holds the questions and the configuration for one pack.
 
-The upstream repository starts with an empty manifest (`{}`), so a fresh fork renders the demo exam only. Every pack is installed explicitly with `pnpm content:add`, which copies the files and records the pin.
+> A subject, its modules, and its banks.
 
-This page covers the manifest, the pack layout, what a sync is allowed to write, and the schema-version contract. For the question rules themselves see [authoring](./authoring.md), for installing packs in your own deployment see [make it your own](./fork-your-own.md).
+The app is agnostic about subject and ships no questions of its own. It bundles a 10-question demo for development and the accessibility gate, and installs every real pack from the pinned manifest in `content/packs.json`.
+
+Mocks offers one pack, for the CPACC certification exam. Install it if you want a finished bank. Nothing else in the app depends on it.
+
+**Agnostic about subject, not about format.** The data model is exam-shaped:
+
+- timed,
+- scored,
+- single-choice session.
+
+You do not need a certification to use it. A trivia night, a language drill, an onboarding quiz, or a safety refresher fits the same shape and gets the same timer, scoring, and review screens.
+
+What you cannot change is that flow. [What a pack defines](#what-a-pack-defines) lists what you control and what is fixed.
+
+## Start here
+
+- **Install the CPACC bank** → [Install, update, remove](#install-update-remove), or the two-command version in the [README](../README.md#use-the-cpacc-bank).
+- **Write your own pack** → [Write your own pack](#write-your-own-pack), then [authoring](./authoring.md).
+- **Know what the app accepts** → [What a pack defines](#what-a-pack-defines).
+- **Understand the sync boundary** → [What a sync may change](#what-a-sync-may-change).
+- **Check schema versions** → [The schema-version contract](#the-schema-version-contract).
+- **Fix an error** → [Troubleshooting](#troubleshooting).
+
+The upstream repository starts with an empty manifest (`{}`), so a fresh fork renders the demo only (after seeding).
+
+Every pack is installed explicitly with `pnpm content:add`, which copies the files and records the pin.
+
+Question rules live in [authoring](./authoring.md), installing packs in your own deployment is covered in [make it your own](./fork-your-own.md).
+
+## What a pack defines
+
+Every user-visible detail about a pack comes from the pack. `exam.json` holds the per-pack row, each `<kind>/bank.json` holds its bank settings and modules, and none of it is hardcoded in the app.
+
+| Field                              | Where       | Effect                                                                                    |
+| ---------------------------------- | ----------- | ----------------------------------------------------------------------------------------- |
+| `title`, `provider`, `providerUrl` | `exam.json` | name and attribution on the lobby and the exam page                                       |
+| `durationMinutes`                  | `exam.json` | default timer: the start page offers 1x, 1.25x, 1.5x, and 2x, and the timer can be paused |
+| `questionCount`                    | `exam.json` | questions drawn for one attempt                                                           |
+| `modules[].questionCount`          | `bank.json` | questions each module contributes; they must add up to `questionCount`                    |
+| `optionCount`                      | both        | options per question, 2 to 10, fixed for the whole pack                                   |
+| `passPercent`                      | `exam.json` | pass mark shown before starting and used in results, 0 to 100                             |
+| `questionOrder`                    | `exam.json` | `mixed` shuffles across modules, `grouped` keeps module order                             |
+| `optionOrder`                      | `exam.json` | `shuffle` or `fixed`                                                                      |
+| `disclaimer`                       | `exam.json` | required text shown with the pack (put the real provenance there)                         |
+| `unofficial`                       | `exam.json` | `true` shows the "Unofficial" badge and wording                                           |
+| `status`                           | both        | `draft`, `published`, or `retired` (a published bank needs a published exam)              |
+
+`modules` is a list, so one pack can have any number of sections, from a single "General knowledge" module to a full certification blueprint.
+
+A _"pub-quiz pack"_, for instance, could set `questionCount: 20`, four 5-question modules ("History", "Science", "Film", "Music"), `durationMinutes: 20`, `passPercent: 50`, and `kind: "general"` references on each question. `sampling` is the one setting that is not free today, only `stratified` is implemented, so module draw counts are always used.
+
+What the format fixes, whatever the subject:
+
+- **Single choice only.** `type` is always `"single"` and each question has exactly one correct option. There is no multi-select, matching, ordering, or free-text type.
+- **Text only.** Images are rejected in the current schema version, so illustration-dependent material does not fit yet.
+- **2 to 10 options**, each with a short label and a rationale explaining why it is right or wrong.
+- **At least one reference per question.** A `general` reference with a note is accepted when a fact is common knowledge and does not rest on a single document, so trivia does not have to invent URLs.
+- **Review metadata for published questions**: `reviewer`, `reviewedAt`, and `sourceCheckedAt`. A bank can stay `draft` while you author it.
+- **IDs prefixed with the slug** (`<exam>-...-0001`), unique across every installed pack.
+- **The practice bank is optional.** If present it uses `"kind": "practice"` and `null` module draw counts, and gives users an untimed mode with immediate feedback.
+
+The app still calls the unit an **"exam"** in its routes and copy (`/portal/<exam>`, "Start exam", "Pass score"). That is the shape it implements, the word is the model's name for a pack, not a claim about your content.
 
 ## How the app finds a pack
 
@@ -19,9 +80,8 @@ This page covers the manifest, the pack layout, what a sync is allowed to write,
 }
 ```
 
-- The key is both the directory name (`content/cpacc/`) and the exam slug declared by `exam.json`. They must agree.
-- `source` is a portable locator. The sync CLI accepts
-  `https://github.com/owner/repo`, `git@github.com:owner/repo`, `github:owner/repo`, `owner/repo`, or a local path, and writes the normalised remote form (or the value passed with `--source`) to the manifest. Commit a remote URL, not a local path, or the pin stops working on another machine.
+- The key is both the directory name (`content/cpacc/`) and the exam slug declared by `exam.json`, they **must** agree.
+- `source` is a portable locator. The sync CLI accepts `https://github.com/owner/repo`, `git@github.com:owner/repo`, `github:owner/repo`, `owner/repo`, or a local path, and writes the normalised remote form (or the value passed with `--source`) to the manifest. Commit a remote URL, **not a local path**, or the pin stops working on another machine.
 - `ref` is a **full 40-character commit SHA**, never a branch or tag. A tag can be moved and a branch changes under you, a SHA makes the build reproducible and the diff auditable.
 
 The bundled `content/demo/` pack is not in the manifest and is never synced. Its exam slug is `cpacc-demo`, and the demo directory keeps that name for continuity. `pnpm content:check` fails if the demo is pinned or if a manifest entry and a `content/` directory disagree.
@@ -47,10 +107,11 @@ mocks-cpacc/       # pack root == content/cpacc/
 │   ├── bank.json
 │   └── questions/<module>/*.json
 ├── README.md
-└── LICENSE
+├── LICENSE
+└── CONTRIBUTING.md  # optional
 ```
 
-- Every directory directly under the pack root that contains a `bank.json` is a bank kind. `exam` and `practice` are the kinds the app knows how to draw from.
+- Every directory directly under the pack root that contains a `bank.json` is a bank kind. `exam` and `practice` are the kinds the app draws from today.
 - `exam.json` is the per-exam configuration. It is not hardcoded anywhere in the app. `bank.json` carries the bank settings and its module list. Exam modules carry a draw count, practice modules leave it empty.
 - Each question is one JSON file named by its ID, under `questions/<module>/`. The full-bank JSON and SQL are generated by the app and are never committed to a pack.
 - `README.md`, `LICENSE`, and `CONTRIBUTING.md` travel with the pack so the synced directory remains self-describing. The app does not render them.
@@ -129,9 +190,15 @@ LICENSE
 CONTRIBUTING.md
 ```
 
-Repository metadata (`.git`, `.github`, `.gitignore`, `.gitattributes`) is skipped. A pack that contains anything else is refused with the offending path. Question files must end in `.json`, empty files are treated as placeholders rather than questions.
+- Repository metadata (`.git`, `.github`, `.gitignore`, `.gitattributes`) is skipped.
+- A pack that contains anything else is **refused** with the offending path.
+- Question files must end in `.json`.
+- Empty files are treated as placeholders rather than questions.
 
-The same boundary is enforced in CI. **Actions → Sync content** runs the sync, validates every pack, and fails if `git diff` shows a path outside `content/` before it opens a pull request. Upstream content therefore arrives as a reviewed PR, never as a direct push, so a bad sync can be closed without data loss.
+The same boundary is enforced in CI.  
+**Actions → Sync content** runs the sync, validates every pack, and fails if `git diff` shows a path outside `content/` before it opens a pull request.
+
+Upstream content therefore arrives as a reviewed PR, never as a direct push, so a bad sync can be closed without data loss.
 
 ## The schema-version contract
 
@@ -144,18 +211,21 @@ The same boundary is enforced in CI. **Actions → Sync content** runs the sync,
 Other rules are checked by the same validator whenever a pack is loaded:
 
 - `bank.json.exam` must equal `exam.json.slug`, and `bank.optionCount` must equal `exam.optionCount`.
-- Exam module draw counts must add up to `exam.questionCount`. A published bank may contain only published questions, and a published bank requires a published exam.
+- Exam module draw counts must add up to `exam.questionCount`.
+- A published bank may contain only published questions, and a published bank requires a published exam.
 - Question IDs are unique across **every** loaded pack, not just within a bank.
 - A bank must not contain the same question twice (stem, options, and correct answer), even under different IDs.
-- Every question needs at least one reference. Published questions need `reviewer`, `reviewedAt`, and `sourceCheckedAt`. `TODO` placeholders and images are rejected.
+- Every question needs at least one reference.
+- Published questions need `reviewer`, `reviewedAt`, and `sourceCheckedAt`.
+- `TODO` placeholders and images are rejected.
 
 The full field-level rules are in [authoring](./authoring.md).
 
 ## Write your own pack
 
 1. **Create a repository** with the layout above and a licence of your choice. The pack is content only, it must not contain app code.
-2. **Write `exam.json`.** Pick a unique slug. It becomes the manifest key, the `content/<exam>/` directory name, the question ID prefix, and the public route (`/portal/<exam>`).
-3. **Write one `bank.json` per bank kind.** Start with an `exam` bank. Module IDs are referenced by every question, so settle them first. A practice bank is optional, it uses `"kind": "practice"` and `null` draw counts.
+2. **Write `exam.json`.** Pick a unique slug. It becomes the manifest key, the `content/<exam>/` directory name, the question ID prefix, and the public route (`/portal/<exam>`). `provider` is the attribution line shown on the page (your name, an organisation, or the quiz's origin), and `disclaimer` is required: use it to say where the material comes from and how official it is.
+3. **Write one `bank.json` per bank kind.** Start with an `exam` bank. You can have one module or many; module IDs are referenced by every question, so settle them first. A practice bank is optional, it uses `"kind": "practice"` and `null` draw counts.
 4. **Write questions** as one file per question. See [authoring](./authoring.md) for the shape, the ID convention, and the review metadata.
 5. **Validate against the app.** From the pack root:
 
@@ -165,12 +235,10 @@ The full field-level rules are in [authoring](./authoring.md).
    node ../mocks/scripts/bank/link-check.ts .   # network
    ```
 
-   The first command exits non-zero on errors, `--strict` makes the length audit fail on its findings as well.  
-   A pack repository can run the same commands in CI against a pinned app commit, see the CPACC pack's [workflow](https://github.com/mocks-org/mocks-cpacc/blob/main/.github/workflows/validate.yml) for a working example.  
-   A private app repository needs an explicit `MOCKS_APP_REPOSITORY` variable and a read-only `MOCKS_APP_TOKEN` secret, since another repository's `GITHUB_TOKEN` cannot read it. `MOCKS_APP_REF` (a full
-   commit SHA) pins the app checkout.  
-   The example workflow carries a fallback SHA, so move both together when you re-pin the app. The SHA must exist in the
-   repository named by `MOCKS_APP_REPOSITORY`. A fork shares history with upstream, but a repository created from an older template copy does not, so upstream app SHAs will not resolve there.
+   - The first command exits non-zero on errors, `--strict` makes the length audit fail on its findings as well.
+   - A pack repository can run the same commands in CI against a pinned app commit, see the CPACC pack's [workflow](https://github.com/mocks-org/mocks-cpacc/blob/main/.github/workflows/validate.yml) for a working example.
+   - A private app repository needs an explicit `MOCKS_APP_REPOSITORY` variable and a read-only `MOCKS_APP_TOKEN` secret, since another repository's `GITHUB_TOKEN` cannot read it. `MOCKS_APP_REF` (a full commit SHA) pins the app checkout.
+   - The example workflow carries a fallback SHA, so move both together when you re-pin the app. The SHA must exist in the repository named by `MOCKS_APP_REPOSITORY`. A fork shares history with upstream, but a repository created from an older template copy does not, so upstream app SHAs will not resolve there.
 
 6. **Tag a release** (`v0.2.0`, …) and push the tag. The tag is a human label, the app pins the SHA it points at.
 7. **Install it in the app**:
@@ -181,9 +249,9 @@ The full field-level rules are in [authoring](./authoring.md).
    pnpm bank:seed:local
    ```
 
-   `--ref <sha>` installs an exact release, without it, `content:add` takes the newest tag and records the commit it points at. Either way the manifest ends up with a full SHA, so the install is reproducible.
+   - `--ref <sha>` installs an exact release, without it, `content:add` takes the newest tag and records the commit it points at. Either way the manifest ends up with a full SHA, so the install is reproducible.
 
-   Commit `content/packs.json` and `content/<exam>/**` together. If a sync from a local checkout has to predate the remote push, pass `--source github:<owner>/<pack>` so the committed source stays portable.
+Commit `content/packs.json` and `content/<exam>/**` together. If a sync from a local checkout has to predate the remote push, pass `--source github:<owner>/<pack>` so the committed source stays portable.
 
 ## Install, update, remove
 
@@ -192,22 +260,19 @@ The full field-level rules are in [authoring](./authoring.md).
 | `pnpm content:add <source> [--ref <sha>]`  | Fetch, validate, install to `content/<exam>/`, write the pin             |
 | `pnpm content:update [exam] [--ref <sha>]` | Re-fetch and replace (default is the newest tag), falling back to `HEAD` |
 | `pnpm content:remove <exam>`               | Delete the directory and its manifest entry                              |
-| `pnpm content:list`                        | Exam, short ref, bank versions, question counts                          |
+| `pnpm content:list`                        | Exam, short ref, bank kinds, and question counts (also the demo)         |
 | `pnpm content:check`                       | Manifest, directories, exam slugs, and schema versions agree             |
 
-All of `add`, `update`, and `remove` accept `--dry-run`, which prints what would
-change and exits without writing. `content:add` refuses an installed pack unless
-you pass `--force`, prefer `content:update`.
+All of `add`, `update`, and `remove` accept `--dry-run`, which prints what would change and exits without writing. `content:add` refuses an installed pack unless you pass `--force`, prefer `content:update`.
 
-A sync that writes anything outside `content/` is a bug. Treat a diff in `src/` or
-a config as a failed sync, not as something to keep.
+A sync that writes anything outside `content/` is a **bug**. Treat a diff in `src/` or a config as a failed sync, not as something to keep.
 
 ## Licensing
 
 - App code is MIT. A pack's content is licensed by that pack, Mocks CPACC uses CC BY-SA 4.0.
 - The licence file is synced with the pack, but the footer links come from `site.licenseLinks` in `src/lib/settings/site.ts`. Update them when you change packs.
 - **Share-alike:** if you distribute a modified copy of CC BY-SA content, your version must stay under CC BY-SA 4.0 with attribution. Your own pack may use any licence you like.
-- Every deployment must state that it is unofficial and that scores are practice feedback, not official results. The copy lives in `site.ts`.
+- Every deployment of an existing exam, must state that it is unofficial and that scores are practice feedback, not official results. The copy lives in `site.ts`.
 
 ## Troubleshooting
 
