@@ -1,0 +1,34 @@
+{
+	// Copy this file to `wrangler.jsonc` before running the app locally:
+	//   cp wrangler.example.jsonc wrangler.jsonc
+	// The real config is intentionally not committed so every clone keeps its own
+	// Cloudflare account and D1 database.
+
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	// Rename the worker if you deploy your own copy, so it does not collide with
+	// another deployment in the same Cloudflare account.
+	"name": "mocks",
+	"compatibility_date": "2026-11-04",
+	"compatibility_flags": ["nodejs_als"],
+	// The SvelteKit Cloudflare adapter >=9.0.0 sets the worker entry and asset
+	// directory automatically during `pnpm build`. DO NOT add `main` here.
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".svelte-kit/cloudflare"
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			// Rename freely: the package.json database scripts target the `DB`
+			// binding, not this name.
+			"database_name": "mocks-db",
+			// Replace with the id printed by `wrangler d1 create <database-name>`.
+			// Local development and the PR gate work with this placeholder id.
+			"database_id": "00000000-0000-0000-0000-000000000000",
+			"migrations_dir": "drizzle"
+		}
+	],
+	"previews": {},
+	"workers_dev": true,
+	"preview_urls": true
+}

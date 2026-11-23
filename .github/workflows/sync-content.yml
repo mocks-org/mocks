@@ -1,0 +1,147 @@
+name: Sync content
+
+# Manual only. A schedule would be convenient, but GitHub disables cron
+# workflows after ~60 days of repository inactivity silently, for exactly the
+# users who rely on them. A dispatch stays predictable.
+#
+# The job never pushes to the default branch. It updates the pinned packs,
+# validates them, and opens a pull request so a bad sync can be closed without
+# data loss.
+on:
+  workflow_dispatch:
+    inputs:
+      exam:
+        description: 'Pack to sync (manifest key). Leave empty for every pinned pack.'
+        required: false
+        type: string
+      ref:
+        description: 'Commit SHA or tag to pin. Leave empty for the latest tag (fallback HEAD).'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+# Queue dispatches instead of cancelling: a cancelled run would leave the
+# checkout untouched, but there is no reason to interleave two syncs.
+concurrency:
+  group: sync-content
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    name: Sync pinned packs
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Checkout the default branch
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # A specific ref belongs to one pack. Applying it to every pack would clone
+      # each repository and check out a commit that probably does not exist.
+      - name: Check inputs
+        env:
+          EXAM: ${{ inputs.exam }}
+          REF: ${{ inputs.ref }}
+        run: |
+          if [ -n "$REF" ] && [ -z "$EXAM" ]; then
+            echo "::error::Choose a pack when pinning a specific ref."
+            exit 1
+          fi
+
+      # With no exam, `content:update` moves every pinned pack. With no ref, it
+      # takes the newest tag in each pack repository (falling back to HEAD).
+      - name: Sync packs
+        env:
+          EXAM: ${{ inputs.exam }}
+          REF: ${{ inputs.ref }}
+        run: |
+          set -euo pipefail
+          args=()
+          if [ -n "$EXAM" ]; then args+=("$EXAM"); fi
+          if [ -n "$REF" ]; then args+=(--ref "$REF"); fi
+          pnpm content:update "${args[@]}"
+
+      # The sync is only worth reviewing if the result still validates. Both
+      # checks cover the demo pack plus every pinned pack.
+      - name: Check the manifest and schema versions
+        run: pnpm content:check
+
+      - name: Validate every pack
+        run: pnpm bank:validate
+
+      - name: Build every pack (smoke)
+        run: pnpm bank:build
+
+      # Enforcement of the split's core invariant: a sync may only write under
+      # content/. Staging first makes new question files visible to the diff.
+      - name: Guard the content/ write boundary
+        run: |
+          set -euo pipefail
+          git add -A
+          outside="$(git diff --cached --name-only | grep -v '^content/' || true)"
+          if [ -n "$outside" ]; then
+            echo "::error::The sync wrote outside content/. Refusing to open a pull request."
+            printf '%s\n' "$outside"
+            exit 1
+          fi
+
+      - name: Check for changes
+        id: diff
+        run: |
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Nothing to sync
+        if: steps.diff.outputs.changed == 'false'
+        run: echo "Every pinned pack is already at the requested ref; nothing to open."
+
+      - name: Render the pull-request body
+        if: steps.diff.outputs.changed == 'true'
+        run: node scripts/content/pr-body.ts --base HEAD > "$RUNNER_TEMP/pr-body.md"
+
+      - name: Open the pull request
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE_BRANCH: ${{ github.event.repository.default_branch }}
+          EXAM: ${{ inputs.exam }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          branch="content/sync-${RUN_ID}-${RUN_ATTEMPT}"
+          if [ -n "$EXAM" ]; then
+            title="chore(content): sync ${EXAM}"
+          else
+            title="chore(content): sync content packs"
+          fi
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch -c "$branch"
+          git commit -m "$title"
+          git push --set-upstream origin "$branch"
+          gh pr create \
+            --base "$BASE_BRANCH" \
+            --head "$branch" \
+            --title "$title" \
+            --body-file "$RUNNER_TEMP/pr-body.md"

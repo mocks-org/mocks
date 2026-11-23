@@ -1,0 +1,49 @@
+{
+	"id": "cpacc-demo-standards-0001",
+	"module": "standards",
+	"type": "single",
+	"stem": "Which U.S. law prohibits discrimination against people with disabilities in public accommodations?",
+	"options": [
+		{
+			"id": "ada",
+			"text": "Americans with Disabilities Act",
+			"shortLabel": "ADA",
+			"rationale": "Prohibits disability discrimination in public accommodations and other areas."
+		},
+		{
+			"id": "ferpa",
+			"text": "Family Educational Rights and Privacy Act",
+			"shortLabel": "FERPA",
+			"rationale": "Protects education records, not public accommodations."
+		},
+		{
+			"id": "hipaa",
+			"text": "Health Insurance Portability and Accountability Act",
+			"shortLabel": "HIPAA",
+			"rationale": "Protects health information privacy."
+		},
+		{
+			"id": "dmca",
+			"text": "Digital Millennium Copyright Act",
+			"shortLabel": "DMCA",
+			"rationale": "Addresses copyright, not disability discrimination."
+		}
+	],
+	"correctOptionId": "ada",
+	"explanation": "The Americans with Disabilities Act (ADA) prohibits discrimination on the basis of disability in employment, public services, and public accommodations.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: ADA overview",
+			"url": "https://example.org/demo/ada"
+		}
+	],
+	"images": [],
+	"difficulty": 1,
+	"tags": ["law"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

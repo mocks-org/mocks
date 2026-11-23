@@ -1,0 +1,37 @@
+{
+	"id": "cpacc-demo-practice-general-0004",
+	"module": "general",
+	"type": "single",
+	"stem": "Building accessibility in from the start is usually cheaper than retrofitting it later.",
+	"options": [
+		{
+			"id": "true",
+			"text": "True",
+			"shortLabel": "True",
+			"rationale": "Correct: early accessibility avoids expensive rework."
+		},
+		{
+			"id": "false",
+			"text": "False",
+			"shortLabel": "False",
+			"rationale": "Retrofitting usually costs more, not less."
+		}
+	],
+	"correctOptionId": "true",
+	"explanation": "Retrofitting often means reworking layout, content, and components. Treating accessibility as a requirement from the beginning avoids repeated rework.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: accessibility business case",
+			"url": "https://example.org/demo/business-case"
+		}
+	],
+	"images": [],
+	"difficulty": 1,
+	"tags": ["process"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

@@ -1,0 +1,49 @@
+{
+	"id": "cpacc-demo-disabilities-0004",
+	"module": "disabilities",
+	"type": "single",
+	"stem": "What is the main purpose of person-first language?",
+	"options": [
+		{
+			"id": "person-first",
+			"text": "To refer to the person before the disability",
+			"shortLabel": "Person first",
+			"rationale": "Emphasizes the person rather than the disability."
+		},
+		{
+			"id": "avoid-mention",
+			"text": "To avoid mentioning disability at all",
+			"shortLabel": "Avoid mention",
+			"rationale": "Person-first language does not require hiding disability."
+		},
+		{
+			"id": "diagnosis",
+			"text": "To describe a medical diagnosis",
+			"shortLabel": "Diagnosis",
+			"rationale": "It is a language choice, not a diagnosis."
+		},
+		{
+			"id": "legal-compliance",
+			"text": "To satisfy legal requirements",
+			"shortLabel": "Legal compliance",
+			"rationale": "It is not primarily a legal compliance tool."
+		}
+	],
+	"correctOptionId": "person-first",
+	"explanation": "Person-first language places the person before the disability in wording, for example \"a person with a disability\". It is a language choice, not a requirement to hide disability.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: person-first language",
+			"url": "https://example.org/demo/person-first"
+		}
+	],
+	"images": [],
+	"difficulty": 1,
+	"tags": ["language"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

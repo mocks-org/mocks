@@ -1,0 +1,49 @@
+{
+	"id": "cpacc-demo-practice-docs-code-0001",
+	"module": "docs-code",
+	"type": "single",
+	"stem": "In HTML, which attribute provides the text alternative for an image?",
+	"options": [
+		{
+			"id": "alt",
+			"text": "alt",
+			"shortLabel": "alt",
+			"rationale": "The alt attribute provides the text alternative."
+		},
+		{
+			"id": "src",
+			"text": "src",
+			"shortLabel": "src",
+			"rationale": "src points to the image file, not its text alternative."
+		},
+		{
+			"id": "title",
+			"text": "title",
+			"shortLabel": "title",
+			"rationale": "title is a tooltip and is not a reliable text alternative."
+		},
+		{
+			"id": "caption",
+			"text": "caption",
+			"shortLabel": "caption",
+			"rationale": "caption belongs to tables, not images."
+		}
+	],
+	"correctOptionId": "alt",
+	"explanation": "The alt attribute is the standard text alternative for an image. It is read in place of the image and should describe its purpose in context.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: images in HTML",
+			"url": "https://example.org/demo/html-images"
+		}
+	],
+	"images": [],
+	"difficulty": 1,
+	"tags": ["html"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}

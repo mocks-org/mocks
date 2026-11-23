@@ -1,0 +1,37 @@
+{
+	"id": "cpacc-demo-practice-general-0002",
+	"module": "general",
+	"type": "single",
+	"stem": "Captions help people who are deaf or hard of hearing and can also help people watching in a noisy place.",
+	"options": [
+		{
+			"id": "true",
+			"text": "True",
+			"shortLabel": "True",
+			"rationale": "Correct: captions help both audiences."
+		},
+		{
+			"id": "false",
+			"text": "False",
+			"shortLabel": "False",
+			"rationale": "Captions are not limited to one audience."
+		}
+	],
+	"correctOptionId": "true",
+	"explanation": "Captions serve more than one audience. They are essential for people who cannot hear the audio and useful for anyone in a noisy or silent environment.",
+	"references": [
+		{
+			"kind": "web",
+			"title": "Demo reference: captions",
+			"url": "https://example.org/demo/captions"
+		}
+	],
+	"images": [],
+	"difficulty": 1,
+	"tags": ["media"],
+	"status": "published",
+	"provenance": "llm_assisted",
+	"reviewer": "demo-reviewer",
+	"reviewedAt": "2026-11-20",
+	"sourceCheckedAt": "2026-11-20"
+}
