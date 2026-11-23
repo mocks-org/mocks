@@ -20,15 +20,15 @@ A fork owner should only need these files:
 | `content/packs.json`             | which packs are installed, pinned by SHA                                  |
 | `wrangler.jsonc`                 | worker name and D1 database name/id (not committed)                       |
 
-Everything under `src/lib/` is app code. If you need to edit it for a routine rebrand, that is a bug in the upstream app, not a missing instruction.
+Everything under `src/lib/` except `src/lib/settings/site.ts` is app code. If you need to edit it for a routine rebrand, that is a bug in the upstream app, not a missing instruction.
 
 ## Skin vs core
 
 `src/theme/` is the skin and belongs to you. `src/lib/` is app code and belongs to upstream (that is where fixes land).
 
-The split is enforced, not aspirational. `pnpm theme:check` (part of `pnpm check`) fails when a theme file contains `aria-*`, `role=`, `tabindex=` or a landmark element (`nav`, `main`, `header`, `footer`). Those live in `#lib` components (`NavLinks.svelte`, `SkipLink.svelte`, `FooterLicences.svelte`, and so on), which the theme composes and styles through a `class` prop.
+The split is enforced, not aspirational. `pnpm theme:check` (part of `pnpm check`) fails when a theme file contains `aria-*` (except `aria-labelledby`, which can only point at an id in the same file), `role=`, `tabindex=`, or a landmark element (`nav`, `main`, `header`, `footer`). Those live in `#lib` components (`NavLinks.svelte`, `SkipLink.svelte`, `FooterLicences.svelte`, and so on), which the theme composes and styles through a `class` prop.
 
-That matters for updates. A fix in `src/lib` merges into your fork with no conflict, because you never edit those files. A fix in `src/theme` would land on lines you changed, so upstream ships it as a patch note in [`upgrading.md`](./upgrading.md) instead of a commit. As result, your skin survives, and a forgotten `aria-label` still reaches you.
+That matters for updates. A fix in `src/lib` merges into your fork with no conflict, because you never edit those files. A fix in `src/theme` would land on lines you changed, so upstream ships it as a patch note in [`upgrading.md`](./upgrading.md) instead of a commit. As a result, your skin survives, and a forgotten `aria-label` still reaches you.
 
 Practical consequences:
 
@@ -118,9 +118,9 @@ If you cannot run the CLI, GitHub's file editor is enough. The manifest is plain
 
 A SHA is not the same as a tag. On the pack repository, open the **Commits** page (or the release), copy the full SHA, and paste it into `ref`. A tag or branch name is rejected by `pnpm content:check` and would make the build unreproducible.
 
-Editing the manifest by hand only changes the pin. You still need the pack's files under `content/<exam>/`. The normal path is to let the sync CLI or the **Sync content** action copy them, use the browser only for a pin you are sure matches the committed directory.
+Editing the manifest by hand only changes the pin. You still need the pack's files under `content/<exam>/`. The normal path is to let the sync CLI or the **Sync content** action copy them. Use the browser only for a pin you are sure matches the committed directory.
 
-To seed the browser-edited content into your deployed database, run `pnpm bank:seed:remote --exam <exam>` locally, then deploy. The GitHub workflow updates the repository, not D1.
+To seed a browser-edited pin into your deployed database, pull the change locally, run `pnpm bank:seed:remote --exam <exam>`, then deploy. The GitHub workflow updates the repository, not D1.
 
 ## 4. Know what not to edit
 
@@ -136,16 +136,24 @@ To seed the browser-edited content into your deployed database, run `pnpm bank:s
 intended way to change the look. Run `pnpm theme:check` after a change, it refuses
 accessibility semantics in that directory.
 
-The bundled `content/demo/` pack is the exception: edit it directly if you need to change the demo, then regenerate `scripts/seed-demo.sql` with `pnpm bank:build content/demo` and concatenate the per-bank SQL in exam-then-practice order. Do not add the demo to the manifest.
+The bundled `content/demo/` pack is the exception: edit it directly if you need to change the demo. Then rebuild its SQL and refresh the committed seed file:
+
+```sh
+pnpm bank:build content/demo
+# writes build/bank/cpacc-demo.sql (exam bank)
+#    and build/bank/cpacc-demo-practice.sql (practice bank)
+```
+
+Keep the four-line "not for production" header at the top of `scripts/seed-demo.sql` and replace everything after it with the two generated files, exam bank first. Do not add the demo to the manifest.
 
 ## 5. Keep it updated
 
 Two update channels. Do not mix them.
 
-| Channel  | How                                                          |
-| -------- | ------------------------------------------------------------ |
-| Content  | move a pack pin, or let **Sync content** open a pull request |
-| App code | `git fetch upstream && git merge upstream/main` — forks only |
+| Channel  | How                                                                          |
+| -------- | ---------------------------------------------------------------------------- |
+| Content  | move a pack pin, or let **Sync content** open a pull request                 |
+| App code | `git fetch upstream && git merge upstream/main` — copies with shared history |
 
 ### Content
 
@@ -167,12 +175,15 @@ Resolve it, and from then on the normal merge works.
 
 Resolution rules:
 
-| Path                                        | Who wins                                                                  |
-| ------------------------------------------- | ------------------------------------------------------------------------- |
-| `src/theme/**`                              | yours, take your side every time                                          |
-| `src/lib/**`, `src/routes/**`, `scripts/**` | upstream, take theirs, then re-apply a local change if you made one there |
-| `pnpm-lock.yaml`                            | `git checkout --theirs pnpm-lock.yaml && pnpm install`                    |
-| `drizzle/**`                                | upstream never edits an applied migration, a conflict means stop and ask  |
+| Path                                                                                        | Who wins                                                                  |
+| ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `src/theme/**`, `src/lib/settings/site.ts`, `src/routes/(site)/*.svx`, `content/packs.json` | yours, take your side every time                                          |
+| the rest of `src/lib/**`, `src/routes/**`, and `scripts/**`                                 | upstream, take theirs, then re-apply a local change if you made one there |
+| `content/<exam>/**`                                                                         | yours, it is synced per pack, never merged                                |
+| `pnpm-lock.yaml`                                                                            | `git checkout --theirs pnpm-lock.yaml && pnpm install`                    |
+| `drizzle/**`                                                                                | upstream never edits an applied migration, a conflict means stop and ask  |
+
+The first row is the same edit surface as [the edit surface](#the-edit-surface). A conflict there is expected: keep your side, then read upstream's change and carry over anything new it added (a field, a prop, a licence entry).
 
 To see what is coming before you merge:
 
@@ -198,5 +209,5 @@ That is the trade! The skin is yours, so a skin fix cannot be merged for you.
 - [ ] `src/theme/` restyled, `pnpm theme:check` passes
 - [ ] `.svx` pages replaced
 - [ ] Footer licence links match the packs you actually ship
-- [ ] Actions enabled, **Sync content** run once to confirm the PR flow
+- [ ] Actions enabled, **Sync content** run once to confirm the PR flow (a run that reports nothing to sync is fine)
 - [ ] `pnpm check && pnpm lint && pnpm test:unit -- --run` pass
