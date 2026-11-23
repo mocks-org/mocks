@@ -1,132 +1,99 @@
 # Mocks
 
-An unofficial, non-commercial, free practice-exam app for multiple choice based exams/quizs, built with SvelteKit and deployed to Cloudflare Workers. Exams live in separately versioned **content packs**, so a fork can add or replace content without touching app code. The look lives in `src/theme/`, so a fork can restyle without blocking app updates.
+An unofficial, non-commercial, free practice-exam app for multiple-choice exams and quizzes. Take timed practice exams, review explanations, and run the whole thing yourself on Cloudflare.
 
-> Mocks is independent and non-commercial. All certification names and trademarks are property of their respective owners. Scores are practice feedback does not constitute, official results.
+> Mocks is independent and non-commercial. All certification names and trademarks are property of their respective owners. Scores are practice feedback and do not constitute official results, certification, or a substitute for the official exam.
 
-## Requirements
+![A question during a mock exam session with demo question](docs/assets/demo-exam-question.png)
 
-- Node 26
-- pnpm 12
-- A Cloudflare account (only for deployment)
+---
 
-## Documentation
+Mocks is built with SvelteKit and Svelte 5, and deploys to Cloudflare Workers with a D1 database. The app and the questions are separate.
 
-- [Content packs](docs/content-packs.md) -- manifest, pack layout, allowlist, schema versions
-- [Make it your own](docs/fork-your-own.md) -- the edit surface, rebranding, browser-editable manifest
-- [Upgrading a fork](docs/upgrading.md) -- merge rules and theme patches for repositories tracking upstream
-- [Authoring questions](docs/authoring.md) -- question shape, options, references, review
-- [Deploy to Cloudflare](docs/deploy.md) -- D1 setup, migrations, seeding, Actions
+The app ships a **10-question demo** so it runs immediately, real exams are installed from version-pinned **content packs**, so you can add or replace content without touching app code.
 
-## Create your copy
+The look lives in `src/theme/`, so you can rebrand without blocking app updates.
 
-**Fork** it, or **clone** it and point `origin` at your own remote. Either way your copy shares history with `mocks-org/mocks`, so `git merge upstream/main` brings accessibility and logic fixes while your skin in `src/theme/` stays yours.
+Pick the line that matches what you want to do:
+
+| I want to...                           | Start here                                    |
+| -------------------------------------- | --------------------------------------------- |
+| Try it without installing anything     | [Preview online](#preview-online)             |
+| Run it on my machine                   | [Run it locally](#run-it-locally)             |
+| Use the full Mocks CPACC question bank | [Use the CPACC bank](#use-the-cpacc-bank)     |
+| Put it on my own domain                | [Deploy to Cloudflare](#deploy-to-cloudflare) |
+| Change the branding or content         | [Make it yours](#make-it-yours)               |
+| Write my own questions                 | [Create your own bank](#create-your-own-bank) |
+
+## Preview online
+
+The project runs at **[mocks.oxypteros.com](https://mocks.oxypteros.com)** with the Mocks CPACC bank installed. No account, no install. Use it to see what the app is before reading any further.
+
+## Run it locally
+
+Requirements: **Node 26** and **pnpm 12**. You do not need a Cloudflare account until you deploy.
 
 ```sh
-# after forking on GitHub
-git clone git@github.com:<you>/mocks.git
+git clone https://github.com/mocks-org/mocks.git
 cd mocks
-git remote add upstream https://github.com/mocks-org/mocks.git
 pnpm install
-```
-
-If you clone upstream directly and push to a new remote, `origin` already points at `mocks-org/mocks`, merge `origin/main` instead of `upstream/main`.
-
-1. `pnpm wrangler:init`, rename the worker in the `wrangler.jsonc`, then `pnpm exec wrangler d1 create <database-name>` and paste the printed id into `wrangler.jsonc`.
-2. `pnpm db:migrate:local`.
-3. Seed the bundled demo with `pnpm db:seed:demo:local`. The repository ships no exam content beyond the demo, so `content/packs.json` starts empty. Install a real pack with `pnpm content:add github:<org>/<pack> --ref <sha>`, then run `pnpm bank:seed:local`. See [content packs](docs/content-packs.md).
-4. Edit `src/theme/` for the look, and `src/lib/settings/site.ts` plus the `.svx` pages for the content (see [make it your own](docs/fork-your-own.md)).
-5. Deploy (see [Deploy](#deploy)), enable Actions in the repository settings, then run **Actions → Sync content → Run workflow** once to confirm the pull-request flow.
-
-Keeping up to date is a normal merge:
-
-```sh
-git fetch upstream
-git merge upstream/main     # resolve src/theme conflicts in your favour
-```
-
-The rules, what to take from upstream, what never to take, and how the lockfile and migrations are handled are in the [keep it updated](docs/fork-your-own.md#5-keep-it-updated) section.
-
-## Quick start
-
-```sh
-pnpm install
-pnpm wrangler:init         # copy wrangler.example.jsonc -> wrangler.jsonc
-pnpm db:migrate:local
-pnpm db:seed:demo:local    # bundled demo exam, used by the a11y gate
+pnpm wrangler:init       # copies wrangler.example.jsonc to wrangler.jsonc
+pnpm db:migrate:local    # creates the local D1 database
+pnpm db:seed:demo:local  # loads the 10-question demo
 pnpm dev
 ```
 
-The demo exam renders at `/portal/cpacc-demo`. The homepage prefers `site.featuredExam` and falls back to the first published exam, so it works with the demo pack alone.
+Open the URL Vite prints (usually <http://localhost:5173>) and go to **`/portal/cpacc-demo`**. The homepage shows the demo automatically. That is the whole first run, no pack, no config, no account.
 
-## Content packs
+The demo is a fixed 10-question sample. It is not in the content manifest and is not seeded to the remote database by the documented flow, so installing a real pack leaves it alone locally.
 
-A pack is one exam directory shaped like `content/<exam>`:
+If you plan to deploy or customise, **fork** on GitHub (or clone and push to your own remote) instead of working in a bare clone. Your copy then shares history with `mocks-org/mocks`, so `git merge upstream/main` brings fixes while your theme stays yours.
 
-```
-exam.json
-exam/
-├── bank.json
-└── questions/<module>/*.json
-practice/
-├── bank.json
-└── questions/<module>/*.json
-LICENSE
-README.md
-CONTRIBUTING.md
-```
+## Use the Mocks CPACC bank
 
-`content:add` pins each installed pack in `content/packs.json` to a full commit SHA. The repository ships an empty manifest; an installed pack looks like this:
-
-```json
-{
-	"cpacc": {
-		"source": "https://github.com/mocks-org/mocks-cpacc",
-		"ref": "8128994c4bedef3208327e09cb929366379e171d"
-	}
-}
-```
-
-Add, update, remove, and inspect packs from this repository. It ships `content/packs.json` as `{}`, so the first `content:add` creates the entry:
+The Mocks CPACC pack is a separate repository, [mocks-org/mocks-cpacc](https://github.com/mocks-org/mocks-cpacc). Install it into your copy and seed it:
 
 ```sh
-pnpm content:add github:mocks-org/mocks-cpacc --ref <sha>
-pnpm content:list
-pnpm content:update cpacc
-pnpm content:remove cpacc
-pnpm content:check  # manifest, directories, and schema versions agree
+pnpm content:add github:mocks-org/mocks-cpacc --ref <full-commit-sha>
+pnpm bank:validate
+pnpm bank:seed:local
 ```
 
-A sync only writes under `content/`, it never touches `src/`, `package.json`, or configs. Packs are validated in a temporary clone before anything is copied, and only an allowlisted set of files is accepted. The app supports schema version N and N-1.
+`--ref` must be a **full commit SHA**, not a branch or a tag, that is what makes a build reproducible.
 
-The same update is available in CI: **Actions → Sync content → Run workflow** (optionally choosing one pack and/or a ref). It validates the result and opens a pull request with the **old → new refs** and the per-module question delta. It never pushes to `main`. The workflow is manual-only, because GitHub silently disables scheduled workflows after about 60 days of repository inactivity.
+Take the newest one from the pack's [releases](https://github.com/mocks-org/mocks-cpacc/releases), then `pnpm content:list` shows what is installed and how many questions each pack holds.
 
-The bundled `content/demo` pack is not in the manifest and is never synced. It keeps `pnpm dev` and the accessibility CI job working without a network fetch.
+The app reads the database, not the `content/` folder. If you add, update, or remove a pack later, run `pnpm bank:seed:local` again (add `--exam cpacc` to seed just that one) before expecting the running app to change.
 
-See [content packs](docs/content-packs.md) for the manifest rules, the full allowlist, the schema-version contract, and how to publish a pack of your own.
+`content:add` fetches the pack into `content/cpacc/` and pins it in `content/packs.json`.
 
-## Authoring
+Commit both together. That commit is your release record.
 
-Question shape, references, option rules, markdown, and the review workflow are documented in [authoring](docs/authoring.md).
+Details, including schema-version and allowlist rules, are in [content packs](docs/content-packs.md).
 
-- The `/author` route is a client-only editor. It keeps drafts in `localStorage` and exports question or bank JSON.
-- Commit exported content to a pack repository, not to a synced `content/<exam>/` directory.
-- From the pack repository, validate with the app's tooling:
+## Deploy to Cloudflare
 
-  ```sh
-  node ../mocks/scripts/bank/validate.ts .
-  node ../mocks/scripts/bank/length-audit.ts .
-  node ../mocks/scripts/bank/link-check.ts .      # network
-  ```
+In short:
 
-- The pack repository's CI runs the first two on every pull request and the link check weekly, against a pinned app commit. - `link-check` fails on 404/410 or a dead host.
-- Timeouts are retried and only warn, so a blocked runner cannot fail the weekly job.
+```sh
+pnpm wrangler:init      # if you have not already
+# set the worker name in wrangler.jsonc
+pnpm exec wrangler d1 create <database-name>
+# paste the printed id into wrangler.jsonc
+pnpm db:migrate:remote
+pnpm bank:seed:remote --exam cpacc # the pack you want live, not the demo
+pnpm build
+pnpm exec wrangler deploy
+```
 
-- Release the pack with a tag (`v0.1.0`, …), then run `pnpm content:update <exam>` in your app repository. The manifest diff is the release record.
+- Update the `url` in `src/lib/settings/site.ts` to your domain
+- Enable Actions in the repository settings if you want the content-sync pull requests, and redeploy whenever the site or content changes.
 
-## What to edit in your copy
+The full walkthrough, including database setup and troubleshooting, is in [Deploy to Cloudflare](docs/deploy.md).
 
-A fork owner should only need:
+## Make it yours
+
+A fork owner only needs these files:
 
 | Path                       | Purpose                                                                   |
 | -------------------------- | ------------------------------------------------------------------------- |
@@ -136,49 +103,64 @@ A fork owner should only need:
 | `content/packs.json`       | which packs are installed, pinned by SHA                                  |
 | `wrangler.jsonc`           | worker name and D1 database name/id                                       |
 
-- Look changes stay in `src/theme/` (`tokens.css`, `Header.svelte`, `Footer.svelte`, `Home.svelte`, `SessionHeader.svelte`)
-- `pnpm theme:check` refuses accessibility semantics there so fixes in `src/lib/` keep merging cleanly.
-- Rebranding is a single-file change: edit `name`, `tagline`, `description`, `url` (your deployed origin, used for canonical URLs), `locale`, `featuredExam`, the link lists, and `social` in `site.ts`.
-- The header, footer, document head, homepage, and authoring defaults all read from it.
-- Replace the prose in the `.svx` pages.
+Rebranding is mostly one file. Edit `name`, `tagline`, `description`, `url`, `locale`, `featuredExam`, the link lists, and `social` in `site.ts`. The header, footer, document head, homepage, and authoring defaults all read from it.
 
-Everything else is app code. If that list grows, treat it as a **bug** in the upstream app, not as documentation to add.
+Look changes stay in `src/theme/` (`tokens.css`, `Header.svelte`, `Footer.svelte`, `Home.svelte`, `SessionHeader.svelte`).
 
-[Make it your own](docs/fork-your-own.md) walks through the same surface step by step, including editing `content/packs.json` in the browser.
+The `pnpm theme:check` refuses accessibility semantics there on purpose, so fixes in `src/lib/` keep merging into your fork cleanly. Everything outside the table above is app code. If the list grows, treat it as a bug, not as documentation to add.
 
-## Commands
+[Make it your own](docs/fork-your-own.md) walks through the same surface step by step, including editing `content/packs.json` in the browser. [Upgrading a fork](docs/upgrading.md) covers merging upstream and the theme patches that need care.
 
-| Command                   | What it does                                             |
-| ------------------------- | -------------------------------------------------------- |
-| `pnpm dev`                | Vite dev server                                          |
-| `pnpm build`              | generate worker types, strip globals, build              |
-| `pnpm preview`            | run the built worker locally on port 4173                |
-| `pnpm check`              | svelte-check with warnings as errors, plus `theme:check` |
-| `pnpm theme:check`        | reject aria/role/landmark markup in `src/theme/`         |
-| `pnpm lint`               | Prettier check + ESLint                                  |
-| `pnpm test:unit`          | Vitest                                                   |
-| `pnpm test:e2e`           | Playwright (builds and previews)                         |
-| `pnpm test:a11y`          | axe scans at 320px and 1280px                            |
-| `pnpm bank:validate`      | validate the demo and every pinned pack                  |
-| `pnpm bank:build`         | write `build/bank/<bank>.json` and `.sql`                |
-| `pnpm bank:seed:local`    | build and apply SQL to local D1                          |
-| `pnpm content:add`        | fetch, validate, install a pack, write the manifest      |
-| `pnpm content:update`     | move a pack to a newer commit                            |
-| `pnpm content:list`       | show pinned packs and question counts                    |
-| `pnpm db:migrate:local`   | apply Drizzle migrations                                 |
-| `pnpm db:seed:demo:local` | seed the bundled demo exam                               |
+## Create your own bank
 
-## Deploy
+A pack is a directory shaped like `content/<exam>`, containing an `exam.json` and per-kind banks such as `exam/` and `practice/`, each with a `bank.json` and question JSON files. Question IDs must be unique across every loaded pack, and the app supports schema version N and N-1.
 
-See [deploy](docs/deploy.md) for the full walkthrough. In short:
+Start with [content packs](docs/content-packs.md#write-your-own-pack) for the layout and manifest, then [authoring questions](docs/authoring.md) for the question shape, references, and review workflow.
 
-1. `pnpm wrangler:init`, then set the worker name in `wrangler.jsonc`.
-2. `pnpm exec wrangler d1 create <database-name>` and paste the id into `wrangler.jsonc`.
-3. `pnpm db:migrate:remote`.
-4. `pnpm bank:seed:remote --exam <exam>` for each pack you want live (not the demo).
-5. `pnpm build`, then `pnpm exec wrangler deploy`.
+The `/author` route in the running app is a client-only editor that exports question or bank JSON, commit the exports to a pack repository, **never** to a synced `content/<exam>/` directory.
+
+From a pack repository next to a checkout of the app:
+
+```sh
+node ../mocks/scripts/bank/validate.ts .
+node ../mocks/scripts/bank/length-audit.ts .
+node ../mocks/scripts/bank/link-check.ts .    # network
+```
+
+Tag a release (`v0.2.0`, ...) and install it with `pnpm content:add ... --ref <sha>` as above.
+
+## Contributing
+
+- **App code, accessibility, or docs:** [CONTRIBUTING.md](.github/CONTRIBUTING.md).
+- **CPACC questions:** [mocks-cpacc/CONTRIBUTING.md](https://github.com/mocks-org/mocks-cpacc/blob/main/CONTRIBUTING.md). Content changes arrive there as pull requests, so a bad sync can be closed without losing data.
+- **Bug reports and feature requests:** open an issue on [mocks-org/mocks](https://github.com/mocks-org/mocks/issues).
+
+Accessibility is a first-class concern for Mocks: `pnpm test:a11y` runs axe at 320px and 1280px against the demo pack, and the theme seam exists so accessibility fixes merge without touching anyone's styling.
+
+## Command reference
+
+| Command                   | What it does                                              |
+| ------------------------- | --------------------------------------------------------- |
+| `pnpm dev`                | Vite dev server                                           |
+| `pnpm build`              | generate worker types, strip globals, build               |
+| `pnpm preview`            | run the built worker locally on port 4173                 |
+| `pnpm check`              | svelte-check with warnings as errors, plus `theme:check`  |
+| `pnpm lint`               | Prettier check + ESLint                                   |
+| `pnpm test:unit`          | Vitest                                                    |
+| `pnpm test:e2e`           | Playwright (builds and previews)                          |
+| `pnpm test:a11y`          | axe scans at 320px and 1280px                             |
+| `pnpm db:migrate:local`   | apply Drizzle migrations                                  |
+| `pnpm db:seed:demo:local` | seed the bundled demo exam                                |
+| `pnpm content:add`        | fetch and validate a pack, install it, write the manifest |
+| `pnpm content:update`     | move an installed pack to a newer commit                  |
+| `pnpm content:list`       | show pinned packs and question counts                     |
+| `pnpm bank:validate`      | validate the demo and every installed pack                |
+| `pnpm bank:seed:local`    | build and apply question SQL to local D1                  |
+| `pnpm bank:seed:remote`   | same, for the deployed database                           |
+
+`package.json` lists the rest, including `bank:build`, `db:migrate:remote`, and the content scripts.
 
 ## Licence
 
-- App code: MIT (`LICENSE`).
-- Question content: the licence declared by each pack. The CPACC Mocks pack uses [CC BY-SA 4.0](https://github.com/mocks-org/mocks-cpacc/blob/main/LICENSE).
+- App code: [MIT](LICENSE).
+- Question content licence is declared by each pack: The Mocks CPACC Mocks pack uses [CC BY-SA 4.0](https://github.com/mocks-org/mocks-cpacc/blob/main/LICENSE). If you distribute modified Mocks content, share-alike applies. Your own packs can use any licence.
