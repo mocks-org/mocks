@@ -4,14 +4,14 @@ This file is for repositories that forked `mocks` as **upstream**. A fork shares
 
 ## What merges cleanly
 
-| Path                                        | Owner     | What to expect                                         |
-| ------------------------------------------- | --------- | ------------------------------------------------------ |
-| `src/theme/**`                              | your fork | upstream commits here only to add a seam               |
-| `src/lib/**`, `src/routes/**`, `scripts/**` | upstream  | merges cleanly, a conflict means you edited core       |
-| `pnpm-lock.yaml`                            | generated | take theirs, then `pnpm install`                       |
-| `drizzle/**`                                | upstream  | append-only, upstream never edits an applied migration |
+| Path                                                                                        | Owner     | What to expect                                                        |
+| ------------------------------------------------------------------------------------------- | --------- | --------------------------------------------------------------------- |
+| `src/theme/**`, `src/lib/settings/site.ts`, `src/routes/(site)/*.svx`, `content/packs.json` | your fork | expected conflicts; keep your side and carry over new upstream fields |
+| the rest of `src/lib/**`, `src/routes/**`, and `scripts/**`                                 | upstream  | merges cleanly, a conflict means you edited core                      |
+| `pnpm-lock.yaml`                                                                            | generated | take theirs, then `pnpm install`                                      |
+| `drizzle/**`                                                                                | upstream  | append-only, upstream never edits an applied migration                |
 
-A merge that conflicts under `src/lib/` is a signal, not a failure. It means the fork owns a line upstream needs to change. Re-apply the local change after taking upstream's side, or open a PR so the seam can move instead.
+A merge that conflicts under core `src/lib/` is a signal, not a failure. It means the fork owns a line upstream needs to change. Re-apply the local change after taking upstream's side, or open a PR so the seam can move instead.
 
 ## Theme patches
 
