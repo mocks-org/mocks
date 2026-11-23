@@ -1,4 +1,3 @@
-import { fileURLToPath } from 'node:url';
 import { mdsvex } from 'mdsvex';
 import { enhancedImages } from '@sveltejs/enhanced-img';
 import tailwindcss from '@tailwindcss/vite';
@@ -9,25 +8,24 @@ import { sveltekit } from '@sveltejs/kit/vite';
 import Icons from 'unplugin-icons/vite';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 
-// mdsvex inserts the layout path as a literal import inside each `.svx` file,
-// so a project-relative path would resolve against the route directory.
-// An absolute path resolves both for Vite and for the `fs`.
-const contentLayout = fileURLToPath(
-	new URL('./src/lib/components/content/ContentLayout.svelte', import.meta.url)
-);
+// mdsvex resolves template paths relative to the project root, and a URL keeps
+// the layout independent of the route directory the document is imported from.
+const contentLayout = new URL('./src/lib/components/content/ContentLayout.svelte', import.meta.url);
 
 export default defineConfig({
 	plugins: [
+		mdsvex({
+			extensions: ['.svx'],
+			templates: { default: contentLayout }
+		}),
 		enhancedImages(),
 		tailwindcss(),
 		sveltekit({
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
-				// mdsvex 0.12 still generates a `$$props` wrapper when a layout is
-				// configured, so `.svx` files must stay in auto-detect mode.
 				runes: ({ filename }) => {
 					const parts = filename.split(/[/\\]/);
-					if (parts.includes('node_modules') || filename.endsWith('.svx')) return undefined;
+					if (parts.includes('node_modules')) return undefined;
 					return true;
 				}
 			},
@@ -35,14 +33,7 @@ export default defineConfig({
 				platformProxy: {
 					configPath: 'wrangler.jsonc'
 				}
-			}),
-			preprocess: [
-				mdsvex({
-					extensions: ['.svx'],
-					layout: { _: contentLayout }
-				})
-			],
-			extensions: ['.svelte', '.svx']
+			})
 		}),
 		Icons({
 			compiler: 'svelte',
