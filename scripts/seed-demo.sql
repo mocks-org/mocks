@@ -101,7 +101,7 @@ INSERT INTO questions (
 	2,
 	'["models"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -167,7 +167,7 @@ INSERT INTO questions (
 	1,
 	'["models"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -233,7 +233,7 @@ INSERT INTO questions (
 	1,
 	'["assistive-technology"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -299,7 +299,7 @@ INSERT INTO questions (
 	1,
 	'["language"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -365,7 +365,7 @@ INSERT INTO questions (
 	2,
 	'["universal-design"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -431,7 +431,7 @@ INSERT INTO questions (
 	1,
 	'["wcag"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -497,7 +497,7 @@ INSERT INTO questions (
 	1,
 	'["keyboard"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -563,7 +563,7 @@ INSERT INTO questions (
 	1,
 	'["alt-text"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -629,7 +629,7 @@ INSERT INTO questions (
 	1,
 	'["law"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -695,7 +695,7 @@ INSERT INTO questions (
 	2,
 	'["acr"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -840,7 +840,7 @@ INSERT INTO questions (
 	1,
 	'["basics"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -888,7 +888,7 @@ INSERT INTO questions (
 	1,
 	'["media"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -936,7 +936,7 @@ INSERT INTO questions (
 	1,
 	'["images"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -984,7 +984,7 @@ INSERT INTO questions (
 	1,
 	'["process"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -1032,7 +1032,7 @@ INSERT INTO questions (
 	1,
 	'["testing"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -1080,7 +1080,7 @@ INSERT INTO questions (
 	1,
 	'["keyboard"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -1128,7 +1128,7 @@ INSERT INTO questions (
 	1,
 	'["html"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -1194,7 +1194,7 @@ INSERT INTO questions (
 	1,
 	'["forms"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -1260,7 +1260,7 @@ INSERT INTO questions (
 	1,
 	'["structure"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
@@ -1326,7 +1326,7 @@ INSERT INTO questions (
 	1,
 	'["links"]',
 	'published',
-	'authored',
+	'llm_assisted',
 	'demo-reviewer',
 	1795132800000,
 	1795132800000
