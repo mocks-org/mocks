@@ -42,7 +42,7 @@ Every user-visible detail about a pack comes from the pack. `exam.json` holds th
 | `title`, `provider`, `providerUrl` | `exam.json` | name and attribution on the lobby and the exam page                                       |
 | `durationMinutes`                  | `exam.json` | default timer: the start page offers 1x, 1.25x, 1.5x, and 2x, and the timer can be paused |
 | `questionCount`                    | `exam.json` | questions drawn for one attempt                                                           |
-| `modules[].questionCount`          | `bank.json` | questions each module contributes; they must add up to `questionCount`                    |
+| `modules[].questionCount`          | `bank.json` | questions each module contributes (they must add up to `questionCount`)                   |
 | `optionCount`                      | both        | options per question, 2 to 10, fixed for the whole pack                                   |
 | `passPercent`                      | `exam.json` | pass mark shown before starting and used in results, 0 to 100                             |
 | `questionOrder`                    | `exam.json` | `mixed` shuffles across modules, `grouped` keeps module order                             |
@@ -225,7 +225,7 @@ The full field-level rules are in [authoring](./authoring.md).
 
 1. **Create a repository** with the layout above and a licence of your choice. The pack is content only, it must not contain app code.
 2. **Write `exam.json`.** Pick a unique slug. It becomes the manifest key, the `content/<exam>/` directory name, the question ID prefix, and the public route (`/portal/<exam>`). `provider` is the attribution line shown on the page (your name, an organisation, or the quiz's origin), and `disclaimer` is required: use it to say where the material comes from and how official it is.
-3. **Write one `bank.json` per bank kind.** Start with an `exam` bank. You can have one module or many; module IDs are referenced by every question, so settle them first. A practice bank is optional, it uses `"kind": "practice"` and `null` draw counts.
+3. **Write one `bank.json` per bank kind.** Start with an `exam` bank. You can have one module or many. Module IDs are referenced by every question, so settle them first. A practice bank is optional, it uses `"kind": "practice"` and `null` draw counts.
 4. **Write questions** as one file per question. See [authoring](./authoring.md) for the shape, the ID convention, and the review metadata.
 5. **Validate against the app.** From the pack root:
 
@@ -236,9 +236,9 @@ The full field-level rules are in [authoring](./authoring.md).
    ```
 
    - The first command exits non-zero on errors, `--strict` makes the length audit fail on its findings as well.
-   - A pack repository can run the same commands in CI against a pinned app commit, see the CPACC pack's [workflow](https://github.com/mocks-org/mocks-cpacc/blob/main/.github/workflows/validate.yml) for a working example.
-   - A private app repository needs an explicit `MOCKS_APP_REPOSITORY` variable and a read-only `MOCKS_APP_TOKEN` secret, since another repository's `GITHUB_TOKEN` cannot read it. `MOCKS_APP_REF` (a full commit SHA) pins the app checkout.
-   - The example workflow carries a fallback SHA, so move both together when you re-pin the app. The SHA must exist in the repository named by `MOCKS_APP_REPOSITORY`. A fork shares history with upstream, but a repository created from an older template copy does not, so upstream app SHAs will not resolve there.
+   - A pack repository can run the same commands in CI against the app, see the CPACC pack's [workflow](https://github.com/mocks-org/mocks-cpacc/blob/main/.github/workflows/validate.yml) for a working example.
+   - A private app repository needs an explicit `MOCKS_APP_REPOSITORY` variable and a read-only `MOCKS_APP_TOKEN` secret, since another repository's `GITHUB_TOKEN` cannot read it.
+   - The example follows the app's default branch rather than a pinned SHA, so a pack is always checked against the current rules and nothing needs editing when the app moves. `MOCKS_APP_REF` (a full commit SHA) pins a run when you need to reproduce an older result; a SHA that no longer exists is a warning, not a failed build. The SHA must exist in the repository named by `MOCKS_APP_REPOSITORY`. A fork shares history with upstream, but a repository created from an older template copy does not, so upstream app SHAs will not resolve there.
 
 6. **Tag a release** (`v0.2.0`, …) and push the tag. The tag is a human label, the app pins the SHA it points at.
 7. **Install it in the app**:
