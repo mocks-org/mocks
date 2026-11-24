@@ -10,6 +10,9 @@ import { site } from '#lib/settings/site';
 
 export const handle: Handle = async ({ event, resolve }) => {
 	return resolve(event, {
-		transformPageChunk: ({ html }) => html.replaceAll('%mocks.lang%', site.locale)
+		transformPageChunk: ({ html }) =>
+			html
+				.replace(/<!doctype html>\s*<!--[\s\S]*?-->/i, '<!doctype html>')
+				.replaceAll('%mocks.lang%', site.locale)
 	});
 };
