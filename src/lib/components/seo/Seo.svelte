@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { site } from '#lib/settings/site';
+	import Schema from '#theme/Schema.svelte';
 
 	type Props = {
 		/** Page title without the site name. Omit to fall back to the site tagline. */
@@ -36,3 +37,5 @@
 		<meta name="robots" content="noindex" />
 	{/if}
 </svelte:head>
+
+<Schema {title} {description} {canonical} {index} {documentTitle} />
