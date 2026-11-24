@@ -78,7 +78,7 @@ pnpm exec wrangler deploy
 The first deploy prints a `workers.dev` URL. If you want a custom domain:
 
 1. Add the domain to Cloudflare and create a Worker route or custom domain in the Cloudflare dashboard.
-2. Set `site.url` in `src/lib/settings/site.ts` to that origin, with no trailing slash. It drives canonical and Open Graph URLs.
+2. Set `site.url` in `src/lib/settings/site.ts` to that origin, with no trailing slash. It drives canonical, Open Graph, sitemap, and robots URLs.
 3. Redeploy. If you only want the custom domain, you can disable `workers_dev` and `preview_urls` in `wrangler.jsonc` (both are enabled in the example config).
 
 ## 6. Enable the repository workflows
@@ -118,6 +118,7 @@ To roll back a content change, move the pin back with `pnpm content:update <exam
 | Only the demo exam exists in production                | The remote seed ran without `--exam`, so it seeded the bundled demo. Re-run `pnpm bank:seed:remote --exam <slug>`.                                                  |
 | Homepage returns 503                                   | No published exam in D1, or the seeded exam has no published questions. Seed a pack with `pnpm bank:seed:remote --exam <exam>`. Locally, `pnpm db:seed:demo:local`. |
 | Canonical URLs point at `workers.dev`                  | `site.url` still has the upstream default. Set it to your origin.                                                                                                   |
+| `/sitemap.xml` lists the wrong host or misses an exam  | Fix `site.url`, or seed the database after installing a pack (the sitemap reads published exams from D1).                                                           |
 | Sync action fails with "wrote outside `content/`"      | The sync is refusing an unsafe diff. Do not merge, investigate the pack.                                                                                            |
 | Remote migration succeeds but deploy uses old bindings | Seed and deploy from the same `wrangler.jsonc`, then redeploy.                                                                                                      |
 

@@ -86,7 +86,7 @@ pnpm build
 pnpm exec wrangler deploy
 ```
 
-- Update the `url` in `src/lib/settings/site.ts` to your domain
+- Update the `url` in `src/lib/settings/site.ts` to your domain (it also sets the canonical, sitemap, and robots URLs).
 - Enable Actions in the repository settings if you want the content-sync pull requests, and redeploy whenever the site or content changes.
 
 The full walkthrough, including database setup and troubleshooting, is in [Deploy to Cloudflare](docs/deploy.md).

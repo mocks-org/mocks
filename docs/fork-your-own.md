@@ -59,7 +59,7 @@ For anything visual (spacing, type scale, arrangement, palette) edit `src/theme/
 | `name`                | Brand name in the header, footer, titles, and authoring tool       |
 | `tagline`             | Fallback page-title phrase                                         |
 | `description`         | `<meta name="description">` and Open Graph description             |
-| `url`                 | Canonical and Open Graph URLs, set it to your deployed origin      |
+| `url`                 | Canonical, Open Graph, sitemap, and robots URLs                    |
 | `locale`              | `<html lang>`                                                      |
 | `featuredExam`        | Exam shown on the homepage, falls back to the first published exam |
 | `logo`                | Header mark, swap the icon import at the top of the file           |
@@ -73,7 +73,9 @@ For anything visual (spacing, type scale, arrangement, palette) edit `src/theme/
 | `credit`              | Toggle for the author credit                                       |
 | `home`                | Hero, sample, and practice copy and button labels                  |
 
-`site.url` must not have a trailing slash, and it should match the origin users actually visit, otherwise canonical links point at the wrong host.
+- `site.url` must not have a trailing slash, and it should match the origin users actually visit, otherwise canonical links point at the wrong host.
+- `/sitemap.xml` is generated per request from `site.url`, the header and footer links in `site.ts`, and every published exam in D1. Install a pack, seed the database, and its `/portal/<exam>` and `/portal/<exam>/start` pages appear in the sitemap with no file to edit.
+- `/robots.txt` is generated too and points crawlers at the sitemap, so both follow `site.url` in a fork.
 
 Then replace the prose in the two `.svx` pages:
 
