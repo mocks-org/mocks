@@ -27,6 +27,15 @@ Patch entries look like this:
 Skip this if you already import it.
 ```
 
+### 2026-11-24 -- SEO schema seams
+
+`Seo.svelte` now renders an optional `<Schema />` from `#theme/Schema.svelte`, and `src/routes/(site)/+layout.svelte` renders an optional `<SiteScript />` from `#theme/SiteScript.svelte`. Both files ship empty by design (upstream never edits them).
+
+Add the two files so the imports resolve:
+
+- `src/theme/Schema.svelte` -- receives `title`, `documentTitle`, `description`, `canonical` and `index`. Render your JSON-LD inside a `<svelte:head>` block here.
+- `src/theme/SiteScript.svelte` -- rendered once for the public site, never inside an exam session. Put client-side enhancements (smooth scroll, analytics) here.
+
 ## Releases
 
 No releases yet. The first entry appears with the first tag.
