@@ -3,6 +3,7 @@
 	import { afterNavigate } from '$app/navigation';
 	import Header from '#theme/Header.svelte';
 	import Footer from '#theme/Footer.svelte';
+	import SiteScript from '#theme/SiteScript.svelte';
 
 	import type { LayoutProps } from './$types';
 
@@ -25,4 +26,5 @@
 	<footer class="w-full">
 		<Footer />
 	</footer>
+	<SiteScript />
 </div>

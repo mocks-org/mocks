@@ -15,6 +15,8 @@ A fork owner should only need these files:
 | `src/theme/Footer.svelte`        | footer arrangement and styling                                            |
 | `src/theme/Home.svelte`          | homepage arrangement and styling                                          |
 | `src/theme/SessionHeader.svelte` | exam lobby, attempt, practice, summary, results and authoring bar         |
+| `src/theme/Schema.svelte`        | structured data (JSON-LD), empty by default                               |
+| `src/theme/SiteScript.svelte`    | client-side site enhancements, empty by default                           |
 | `src/lib/settings/site.ts`       | name, logo, metadata, nav, footer, homepage copy, licences, featured exam |
 | `src/routes/(site)/*.svx`        | about and accessibility prose                                             |
 | `content/packs.json`             | which packs are installed, pinned by SHA                                  |
