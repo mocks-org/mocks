@@ -230,6 +230,23 @@
 				</select>
 			</div>
 
+			<div>
+				<label class={labelClass} for="question-author">Author</label>
+				<input
+					autocomplete="off"
+					id="question-author"
+					class={inputClass}
+					value={question.author ?? ''}
+					oninput={(event) => (question.author = event.currentTarget.value || undefined)}
+					aria-invalid={hasError('author') ? 'true' : undefined}
+					aria-describedby={describedByIds('question-author-hint', describedBy('author'))}
+				/>
+				<p id="question-author-hint" class={hintClass}>
+					Public credit for the writer. Separate from the reviewer.
+				</p>
+				{@render fieldErrors('author')}
+			</div>
+
 			<div class="sm:col-span-2">
 				<label class={labelClass} for="question-tags">Tags</label>
 				<input
