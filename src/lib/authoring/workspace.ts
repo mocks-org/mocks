@@ -82,6 +82,7 @@ export function newQuestion(
 		tags: [],
 		status: 'draft',
 		provenance: 'authored',
+		author: undefined,
 		reviewer: null,
 		reviewedAt: null,
 		sourceCheckedAt: null
@@ -160,6 +161,7 @@ export function toQuestionFile(question: Question): Question {
 		tags: [...question.tags],
 		status: question.status,
 		provenance: question.provenance,
+		author: question.author,
 		reviewer: question.reviewer,
 		reviewedAt: question.reviewedAt,
 		sourceCheckedAt: question.sourceCheckedAt

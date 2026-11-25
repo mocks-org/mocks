@@ -152,6 +152,7 @@ export const questionSchema = z.object({
 	tags: z.array(z.string().trim().min(1)),
 	status: z.enum(QUESTION_STATUSES),
 	provenance: z.enum(PROVENANCES),
+	author: optionalText,
 	reviewer: z.string().trim().min(1).nullable(),
 	reviewedAt: z.iso.date().nullable(),
 	sourceCheckedAt: z.iso.date().nullable()
