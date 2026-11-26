@@ -59,7 +59,7 @@ pnpm bank:validate
 pnpm bank:seed:local
 ```
 
-`--ref` must be a **full commit SHA**, not a branch or a tag, that is what makes a build reproducible.
+`--ref` is optional: without it the newest release tag is used and its commit recorded. With it, it must be a **full commit SHA**, not a branch or a tag, that is what makes a build reproducible.
 
 Take the newest one from the pack's [releases](https://github.com/mocks-org/mocks-cpacc/releases), then `pnpm content:list` shows what is installed and how many questions each pack holds.
 

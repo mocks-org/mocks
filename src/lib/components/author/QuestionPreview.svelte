@@ -109,5 +109,11 @@
 				</ul>
 			</div>
 		{/if}
+
+		{#if question.author}
+			<p class="mt-3 border-t border-on-surface-muted pt-3 text-xs text-on-surface-muted">
+				Question by <span class="font-semibold text-on-surface">{question.author}</span>
+			</p>
+		{/if}
 	</div>
 </section>

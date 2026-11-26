@@ -63,6 +63,7 @@ Each question is one JSON file, named by its ID, in the directory of its module.
 	"tags": ["wcag", "keyboard"],
 	"status": "published",
 	"provenance": "authored",
+	"author": "contributor-handle",
 	"reviewer": "reviewer-handle",
 	"reviewedAt": "2026-11-20",
 	"sourceCheckedAt": "2026-11-20"
@@ -84,6 +85,7 @@ Each question is one JSON file, named by its ID, in the directory of its module.
 | `tags`            | Free-form topic labels for review and future drills.                                       |
 | `status`          | `draft`, `review`, `published`, or `retired`.                                              |
 | `provenance`      | `authored` or `llm_assisted`.                                                              |
+| `author`          | Public credit for the writer, separate from the reviewer. Optional.                        |
 | `reviewer`        | Name or handle (required once published).                                                  |
 | `reviewedAt`      | `YYYY-MM-DD` (required once published).                                                    |
 | `sourceCheckedAt` | `YYYY-MM-DD`, the date the citation was last verified (required once published).           |

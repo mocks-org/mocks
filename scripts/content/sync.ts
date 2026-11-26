@@ -323,7 +323,7 @@ function commandAdd(parsed: ParsedArguments): void {
 	const source = normalizeSource(input);
 	const manifest = readManifest();
 
-	withFetchedPack(source, { ref: parsed.ref }, (fetched) => {
+	withFetchedPack(source, { ref: parsed.ref, latestTag: !parsed.ref }, (fetched) => {
 		assertAllowlisted(fetched.dir);
 		const pack = loadPackDir(fetched.dir, { requireQuestions: true });
 		reportPack(pack, fetched.sha);

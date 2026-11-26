@@ -62,6 +62,7 @@ What the format fixes, whatever the subject:
 - **2 to 10 options**, each with a short label and a rationale explaining why it is right or wrong.
 - **At least one reference per question.** A `general` reference with a note is accepted when a fact is common knowledge and does not rest on a single document, so trivia does not have to invent URLs.
 - **Review metadata for published questions**: `reviewer`, `reviewedAt`, and `sourceCheckedAt`. A bank can stay `draft` while you author it.
+- **An optional author credit**: `author` names the writer, is public, and travels with the pack. It is not review metadata and is not stored in D1 or shown in the exam UI.
 - **IDs prefixed with the slug** (`<exam>-...-0001`), unique across every installed pack.
 - **The practice bank is optional.** If present it uses `"kind": "practice"` and `null` module draw counts, and gives users an untimed mode with immediate feedback.
 

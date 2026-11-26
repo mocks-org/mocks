@@ -20,7 +20,9 @@
 	class={cn('flex h-full w-full flex-col items-start justify-center lg:justify-evenly', className)}
 >
 	<div class="space-y-6">
-		<p class="font-mono text-sm font-semibold tracking-wide text-on-surface-muted uppercase">
+		<p
+			class="w-fit rounded bg-on-surface-muted px-1 py-0.5 font-mono text-xs font-bold text-surface-accent uppercase"
+		>
 			{exam.title}
 		</p>
 		<h1
