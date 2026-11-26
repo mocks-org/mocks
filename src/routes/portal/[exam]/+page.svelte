@@ -5,6 +5,7 @@
 	import { RadioGroup } from 'bits-ui';
 	import Button from '#lib/components/ui/Buttons.svelte';
 	import ExternalLink from '#lib/components/ui/ExternalLink.svelte';
+	import ExamTitle from '#lib/components/ui/ExamTitle.svelte';
 	import Seo from '#lib/components/seo/Seo.svelte';
 	import Header from '#theme/Header.svelte';
 	import Footer from '#theme/Footer.svelte';
@@ -85,7 +86,7 @@
 			</div>
 
 			<h1 class="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-balance sm:text-5xl">
-				{data.exam.title}
+				<ExamTitle title={data.exam.title} />
 			</h1>
 			<div class="my-6 h-2 w-full bg-on-surface-muted"></div>
 		</div>
@@ -212,7 +213,8 @@
 
 						<table class="mt-4 w-full border-collapse text-left text-sm">
 							<caption class="sr-only">
-								Modules in {data.exam.title} and the number of questions drawn from each
+								Modules in <ExamTitle title={data.exam.title} /> and the number of questions drawn from
+								each
 							</caption>
 							<thead>
 								<tr class="border-b-2 border-on-surface-muted font-mono text-xs uppercase">

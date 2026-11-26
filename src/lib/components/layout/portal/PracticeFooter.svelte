@@ -6,6 +6,7 @@
 	import type { Exam } from '#lib/domain/types';
 	import ExamExitDialog from '#lib/components/layout/portal/ExamExitDialog.svelte';
 	import Button from '#lib/components/ui/Buttons.svelte';
+	import ExamTitle from '#lib/components/ui/ExamTitle.svelte';
 	import {
 		clearPracticeSession,
 		practiceCounts,
@@ -118,7 +119,7 @@
 			</Button>
 			<div class="hidden min-w-0 items-center gap-2 sm:flex">
 				<span class="h-3 w-0.5 bg-primary-accent"></span>
-				<span lang={exam.contentLocale} class="truncate">{exam.title}</span>
+				<span lang={exam.contentLocale} class="truncate"><ExamTitle title={exam.title} /></span>
 			</div>
 		</div>
 

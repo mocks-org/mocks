@@ -4,6 +4,7 @@
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
 	import Button from '#lib/components/ui/Buttons.svelte';
+	import ExamTitle from '#lib/components/ui/ExamTitle.svelte';
 	import Seo from '#lib/components/seo/Seo.svelte';
 	import ExamTimer from '#lib/components/layout/portal/ExamTimer.svelte';
 	import FullscreenButton from '#lib/components/layout/portal/FullscreenButton.svelte';
@@ -153,7 +154,7 @@
 							id="lobby-heading"
 							class="mt-3 text-4xl font-bold tracking-tight text-balance sm:text-5xl"
 						>
-							{data.exam.title}
+							<ExamTitle title={data.exam.title} />
 						</h1>
 						<p
 							class="mt-4 w-full max-w-xl text-lg leading-relaxed text-pretty text-on-surface-muted"

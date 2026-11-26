@@ -7,6 +7,8 @@
 	import { tick } from 'svelte';
 	import Button from '#lib/components/ui/Buttons.svelte';
 	import MarkdownText from '#lib/components/ui/MarkdownText.svelte';
+	import ExamTitle from '#lib/components/ui/ExamTitle.svelte';
+
 	//Icons
 	import IconTryAgain from '~icons/oxy/rotate-ccw';
 	import IconCorrect from '~icons/oxy/circle-check-big';
@@ -135,7 +137,9 @@
 		<p class="text-xs font-semibold tracking-wide text-on-surface-muted uppercase">
 			Practice question
 		</p>
-		<p class="text-right text-xs font-medium text-on-surface-muted">{exam.title}</p>
+		<p class="text-right text-xs font-medium text-on-surface-muted">
+			<ExamTitle title={exam.title} />
+		</p>
 	</div>
 
 	<form onsubmit={handleSubmit}>
