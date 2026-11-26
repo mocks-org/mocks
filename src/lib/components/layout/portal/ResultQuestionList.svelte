@@ -146,9 +146,9 @@
 						</summary>
 
 						<div class="border-t border-surface-muted px-3 py-3 sm:px-4">
-								<p class="mb-2 font-mono text-xs text-on-surface-muted">
-									Question ID: <span class="select-all">{question.id}</span>
-								</p>
+							<p class="mb-2 font-mono text-xs text-on-surface-muted">
+								Question ID: <span class="select-all">{question.id}</span>
+							</p>
 
 							<p class="text-sm leading-relaxed">
 								{#if question.status === 'correct'}
