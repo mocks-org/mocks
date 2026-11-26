@@ -57,6 +57,13 @@ export const site = {
 	 */
 	featuredExam: 'cpacc',
 
+	/**
+	 * Spoken forms for initialisms that a speech synthesizer should read as a
+	 * word rather than letter by letter, for example `{ LEED: 'leed' }`.
+	 * Initialisms not listed here are spelled out (`CPACC` becomes "C P A C C").
+	 */
+	pronunciations: {} as Record<string, string>,
+
 	/** Logo mark shown beside the name. Swap the import above to change it. */
 	logo: Logo,
 
