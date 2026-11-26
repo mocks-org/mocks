@@ -19,10 +19,6 @@
 
 	let { questions, counts }: ResultsListProps = $props();
 
-	// Local debugging helper only. Vite replaces `import.meta.env.DEV` with
-	// `false` in builds, so the question-ID block is removed from production.
-	const showQuestionIds = import.meta.env.DEV;
-
 	let filter = $state<ResultsFilter>('all');
 	let announcement = $state('');
 
@@ -150,12 +146,9 @@
 						</summary>
 
 						<div class="border-t border-surface-muted px-3 py-3 sm:px-4">
-							<!-- Local debugging helper, shows the question ID for cross-referencing the seed data. -->
-							{#if showQuestionIds}
 								<p class="mb-2 font-mono text-xs text-on-surface-muted">
 									Question ID: <span class="select-all">{question.id}</span>
 								</p>
-							{/if}
 
 							<p class="text-sm leading-relaxed">
 								{#if question.status === 'correct'}
