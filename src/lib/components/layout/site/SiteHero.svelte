@@ -26,9 +26,7 @@
 		>
 			<ExamTitle title={exam.title} />
 		</p>
-		<h1
-			class="max-w-160 text-5xl leading-tight font-bold tracking-tight text-balance sm:text-6xl lg:-mt-4"
-		>
+		<h1 class="max-w-160 text-5xl leading-tight font-bold tracking-tight sm:text-6xl lg:-mt-4">
 			{site.home.heroTitle}
 		</h1>
 		<p class="max-w-xl text-lg leading-relaxed font-medium text-pretty text-on-surface-muted">
