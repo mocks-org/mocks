@@ -108,13 +108,9 @@ Cite primary sources, and make the citation actually support the answer. "See th
 
 ## Sourcing and originality
 
-- Write stems, options, rationales, and explanations in original wording. Facts are
-  not copyrightable; expression is. Do not paste passages, tables, or figures
-  without permission.
-- Do not reproduce real or leaked exam items, or paid course content, and do not
-  imply access to the provider's item bank.
-- Name the jurisdiction and version for legal or standards claims, and do not imply
-  legal advice.
+- Write stems, options, rationales, and explanations in original wording. Facts are not copyrightable. Expression is! Do not paste passages, tables, or figures without permission.
+- Do not reproduce real or leaked exam items, or paid course content, and do not imply access to the provider's item bank.
+- Name the jurisdiction and version for legal or standards claims, and do not imply legal advice.
 - By contributing, you license your questions under the pack's licence.
 
 ## Options and distractors
@@ -146,6 +142,8 @@ Links, images, headings, lists, tables, and raw HTML are shown as plain text. Do
 - Keep the answer independent of colour, position, shape, or a purely visual detail.
 - Stems and options must read linearly for a screen reader.
 - Avoid unexplained jargon and cultural references.
+- Use inclusive, people-first language. Avoid outdated, dehumanising, or disability-as-metaphor wording. A pack may publish its own code of conduct with the term list. The [CPACC pack's](https://github.com/mocks-org/mocks-cpacc/blob/main/CODE_OF_CONDUCT.md) is the reference implementation.
+- A pack may publish an accessibility statement for its content, separate from the app's own statement. The [CPACC pack's](https://github.com/mocks-org/mocks-cpacc/blob/main/ACCESSIBILITY.md) is the reference implementation.
 
 ## Bank-level rules
 
@@ -178,7 +176,7 @@ Allowed, with conditions:
 
 1. A human author owns the question and is accountable for it.
 2. The question is fact-checked against the cited source, not against the model.
-3. Wording is edited for clarity and originality; no near-copy of source text.
+3. Wording is edited for clarity and originality, no near-copy of source text.
 4. It passes the same review as fully human-authored content.
 5. Provenance is recorded as `llm_assisted`, with reviewer and dates.
 6. Model output is never imported into D1 without review.

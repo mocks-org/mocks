@@ -203,6 +203,20 @@ Upstream commits are deliberate about what lands in `src/theme/`: after the firs
 
 That is the trade! The skin is yours, so a skin fix cannot be merged for you.
 
+## Publish your own accessibility statement
+
+The `/accessibility` page upstream is a placeholder on purpose. A statement in the template would be inherited by every fork and could become false the moment you change a palette, a page, or a pack.
+
+Before you launch:
+
+1. Replace `src/routes/(site)/accessibility/+page.svx` with a statement for your deployment.
+2. Say what you tested and how (e.g. keyboard, screen reader, zoom, forced colors, reduced motion). Name the routes and the packs you ship.
+3. Say what you did not test. A short, honest limitations section is worth more than a conformance badge.
+4. Keep the upstream theme seam and run `pnpm check` and `pnpm test:a11y` after a theme change (the gate only covers the routes it scans).
+5. If you distribute the app or the content, publish a VPAT/ACR for your deployment.
+
+What the core does and does not guarantee is in [`.github/ACCESSIBILITY.md`](../.github/ACCESSIBILITY.md).
+
 ## Checklist
 
 - [ ] `pnpm install` and `pnpm wrangler:init`
@@ -212,6 +226,7 @@ That is the trade! The skin is yours, so a skin fix cannot be merged for you.
 - [ ] `site.ts` edited, `site.url` matches the deployed origin
 - [ ] `src/theme/` restyled, `pnpm theme:check` passes
 - [ ] `.svx` pages replaced
+- [ ] `/accessibility` replaced with your own statement. A VPAT/ACR published if you distribute the app or content
 - [ ] Footer licence links match the packs you actually ship
 - [ ] Actions enabled, **Sync content** run once to confirm the PR flow (a run that reports nothing to sync is fine)
 - [ ] `pnpm check && pnpm lint && pnpm test:unit -- --run` pass

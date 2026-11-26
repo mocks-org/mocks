@@ -80,6 +80,7 @@ The first deploy prints a `workers.dev` URL. If you want a custom domain:
 1. Add the domain to Cloudflare and create a Worker route or custom domain in the Cloudflare dashboard.
 2. Set `site.url` in `src/lib/settings/site.ts` to that origin, with no trailing slash. It drives canonical, Open Graph, sitemap, and robots URLs.
 3. Redeploy. If you only want the custom domain, you can disable `workers_dev` and `preview_urls` in `wrangler.jsonc` (both are enabled in the example config).
+4. Replace the `/accessibility` placeholder with a statement for **your** deployment before you announce the site. The upstream page is deliberately empty, a statement inherited from the template would not describe your theme, content, or testing. See [Make it your own](./fork-your-own.md#publish-your-own-accessibility-statement).
 
 ## 6. Enable the repository workflows
 
