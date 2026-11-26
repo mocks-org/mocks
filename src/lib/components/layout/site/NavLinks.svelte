@@ -33,21 +33,29 @@
 	const hrefFor = (id: RouteId) => resolve(id as '/(site)');
 </script>
 
+{#snippet linkButton(item: NavLink)}
+	{@const isCurrent = page.route.id === item.id}
+	<Button
+		variant="navLink"
+		size="navLink"
+		href={hrefFor(item.id)}
+		aria-current={isCurrent ? 'page' : undefined}
+		class="px-0 aria-[current=page]:underline aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-4"
+	>
+		{item.label}
+	</Button>
+{/snippet}
+
 <nav aria-label={label} class={cn('flex', isEnd && 'sm:justify-end', className)}>
-	<ul class="flex flex-wrap gap-4">
-		{#each links as item (item.id)}
-			{@const isCurrent = page.route.id === item.id}
-			<li>
-				<Button
-					variant="navLink"
-					size="navLink"
-					href={hrefFor(item.id)}
-					aria-current={isCurrent ? 'page' : undefined}
-					class="px-0 aria-[current=page]:underline aria-[current=page]:decoration-2 aria-[current=page]:underline-offset-4"
-				>
-					{item.label}
-				</Button>
-			</li>
-		{/each}
-	</ul>
+	{#if links.length > 1}
+		<ul class="flex flex-wrap gap-4">
+			{#each links as item (item.id)}
+				<li>
+					{@render linkButton(item)}
+				</li>
+			{/each}
+		</ul>
+	{:else if links.length === 1}
+		{@render linkButton(links[0])}
+	{/if}
 </nav>
