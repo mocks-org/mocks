@@ -4,6 +4,7 @@
 	import { resolve } from '$app/paths';
 	import type { AttemptResult, SubmittedAnswer } from '#lib/domain/types';
 	import Button from '#lib/components/ui/Buttons.svelte';
+	import ExamTitle from '#lib/components/ui/ExamTitle.svelte';
 	import Seo from '#lib/components/seo/Seo.svelte';
 	import ModuleScoreBars from '#lib/components/layout/portal/ModuleScoreBars.svelte';
 	import ResultQuestionList from '#lib/components/layout/portal/ResultQuestionList.svelte';
@@ -79,7 +80,9 @@
 		{#snippet leading()}
 			<p class="min-w-0 truncate text-sm font-semibold text-on-surface">
 				Results
-				<span class="font-normal text-on-surface-muted">· {data.exam.title}</span>
+				<span class="font-normal text-on-surface-muted">
+					· <ExamTitle title={data.exam.title} />
+				</span>
 			</p>
 		{/snippet}
 
@@ -93,7 +96,9 @@
 		tabindex="-1"
 		class="mx-auto w-full max-w-6xl flex-1 px-3 py-8 sm:px-6 sm:py-12"
 	>
-		<h1 id="results-heading" tabindex="-1" class="sr-only">Results for {data.exam.title}</h1>
+		<h1 id="results-heading" tabindex="-1" class="sr-only">
+			Results for <ExamTitle title={data.exam.title} />
+		</h1>
 
 		{#if status === 'loading'}
 			<p role="status" class="text-sm text-on-surface-muted">Scoring your attempt…</p>

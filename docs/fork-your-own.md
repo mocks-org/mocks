@@ -64,6 +64,7 @@ For anything visual (spacing, type scale, arrangement, palette) edit `src/theme/
 | `url`                 | Canonical, Open Graph, sitemap, and robots URLs                    |
 | `locale`              | `<html lang>`                                                      |
 | `featuredExam`        | Exam shown on the homepage, falls back to the first published exam |
+| `pronunciations`      | Spoken forms for acronyms read as words, e.g. `{ LEED: 'leed' }`   |
 | `logo`                | Header mark, swap the icon import at the top of the file           |
 | `startYear`           | First year in the footer copyright range                           |
 | `headerLinks`         | In-site header navigation                                          |
@@ -76,6 +77,7 @@ For anything visual (spacing, type scale, arrangement, palette) edit `src/theme/
 | `home`                | Hero, sample, and practice copy and button labels                  |
 
 - `site.url` must not have a trailing slash, and it should match the origin users actually visit, otherwise canonical links point at the wrong host.
+- Exam titles are spelled out for screen readers (`CPACC` → “C P A C C”) by the `ExamTitle` component, so an initialism is not read as a word. If the featured exam is an acronym, put its expansion in `home.heroSubtitle` once. If an acronym is normally said as a word (LEED, SHRM), add its spoken form to `pronunciations`.
 - `/sitemap.xml` is generated per request from `site.url`, the header and footer links in `site.ts`, and every published exam in D1. Install a pack, seed the database, and its `/portal/<exam>` and `/portal/<exam>/start` pages appear in the sitemap with no file to edit.
 - `/robots.txt` is generated too and points crawlers at the sitemap, so both follow `site.url` in a fork.
 

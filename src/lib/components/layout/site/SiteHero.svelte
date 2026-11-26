@@ -4,6 +4,7 @@
 	import { cn } from '#lib/utils/cn';
 	import { site } from '#lib/settings/site';
 	import Button from '#lib/components/ui/Buttons.svelte';
+	import ExamTitle from '#lib/components/ui/ExamTitle.svelte';
 
 	type Props = {
 		exam: ExamSummary;
@@ -23,11 +24,9 @@
 		<p
 			class="w-fit rounded bg-on-surface-muted px-1 py-0.5 font-mono text-xs font-bold text-surface-accent uppercase"
 		>
-			{exam.title}
+			<ExamTitle title={exam.title} />
 		</p>
-		<h1
-			class="max-w-160 text-5xl leading-tight font-bold tracking-tight text-balance sm:text-6xl lg:-mt-4"
-		>
+		<h1 class="max-w-160 text-5xl leading-tight font-bold tracking-tight sm:text-6xl lg:-mt-4">
 			{site.home.heroTitle}
 		</h1>
 		<p class="max-w-xl text-lg leading-relaxed font-medium text-pretty text-on-surface-muted">
