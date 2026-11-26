@@ -180,8 +180,8 @@
 <style>
 	/*
 	 * The score box is sized from the container, not the number, so 10% and 85%
-	 * occupy the same height and width. `cqi` keeps it inside the grid
-	 * column instead of overflowing like `vw`.
+	 * occupy the same height and width. `cqi` keeps it inside the grid column 
+	 * instead of overflowing like `vw`.
 	 */
 	.score-block {
 		container-type: inline-size;
