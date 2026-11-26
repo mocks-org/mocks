@@ -4,7 +4,9 @@ An unofficial, non-commercial, free practice-exam app for multiple-choice exams 
 
 > Mocks is independent and non-commercial. All certification names and trademarks are property of their respective owners. Scores are practice feedback and do not constitute official results, certification, or a substitute for the official exam.
 
+<!--
 ![A question during a mock exam session with demo question](docs/assets/demo-exam-question.png)
+-->
 
 ---
 
@@ -131,11 +133,11 @@ Tag a release (`v0.2.0`, ...) and install it with `pnpm content:add ... --ref <s
 
 ## Contributing
 
-- **App code, accessibility, or docs:** [CONTRIBUTING.md](.github/CONTRIBUTING.md).
-- **CPACC questions:** [mocks-cpacc/CONTRIBUTING.md](https://github.com/mocks-org/mocks-cpacc/blob/main/CONTRIBUTING.md). Content changes arrive there as pull requests, so a bad sync can be closed without losing data.
+- **App code, accessibility, or docs:** [CONTRIBUTING.md](.github/CONTRIBUTING.md), the [code of conduct](.github/CODE_OF_CONDUCT.md), and the [security policy](.github/SECURITY.md).
+- **CPACC questions:** [mocks-cpacc/CONTRIBUTING.md](https://github.com/mocks-org/mocks-cpacc/blob/main/CONTRIBUTING.md) and its [code of conduct](https://github.com/mocks-org/mocks-cpacc/blob/main/CODE_OF_CONDUCT.md). Content changes arrive there as pull requests, so a bad sync can be closed without losing data.
 - **Bug reports and feature requests:** open an issue on [mocks-org/mocks](https://github.com/mocks-org/mocks/issues).
 
-Accessibility is a first-class concern for Mocks: `pnpm test:a11y` runs axe at 320px and 1280px against the demo pack, and the theme seam exists so accessibility fixes merge without touching anyone's styling.
+Accessibility is a first-class concern for Mocks: `pnpm test:a11y` runs axe at 320px and 1280px against the demo pack, and the theme seam exists so accessibility fixes merge without touching anyone's styling. What the core does and does not guarantee is in [`.github/ACCESSIBILITY.md`](.github/ACCESSIBILITY.md).
 
 ## Command reference
 
