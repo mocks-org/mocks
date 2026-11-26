@@ -27,7 +27,14 @@ import { printIssues, repoRoot } from '../bank/source.ts';
  */
 
 const REPO_META = new Set(['.git', '.github', '.gitignore', '.gitattributes', '.gitKeep']);
-const PACK_FILES = new Set(['exam.json', 'README.md', 'LICENSE', 'CONTRIBUTING.md']);
+const PACK_FILES = new Set([
+	'exam.json',
+	'README.md',
+	'LICENSE',
+	'CONTRIBUTING.md',
+	'CODE_OF_CONDUCT.md',
+	'ACCESSIBILITY.md'
+]);
 
 interface ResolvedSource {
 	fetchUrl: string;
@@ -233,7 +240,8 @@ function assertAllowlisted(root: string): void {
 				}
 				throw new Error(
 					`Pack contains ${name}/${nested.name}, which is outside the allowlist. ` +
-						'Allowed: exam.json, <kind>/bank.json, <kind>/questions/**, README.md, LICENSE, CONTRIBUTING.md.'
+						'Allowed: exam.json, <kind>/bank.json, <kind>/questions/**, README.md, LICENSE, ' +
+						'CONTRIBUTING.md, CODE_OF_CONDUCT.md, ACCESSIBILITY.md.'
 				);
 			}
 			continue;
@@ -241,7 +249,8 @@ function assertAllowlisted(root: string): void {
 
 		throw new Error(
 			`Pack contains ${name}, which is outside the allowlist. ` +
-				'Allowed: exam.json, <kind>/bank.json, <kind>/questions/**, README.md, LICENSE, CONTRIBUTING.md.'
+				'Allowed: exam.json, <kind>/bank.json, <kind>/questions/**, README.md, LICENSE, ' +
+				'CONTRIBUTING.md, CODE_OF_CONDUCT.md, ACCESSIBILITY.md.'
 		);
 	}
 }
