@@ -92,7 +92,7 @@
 </script>
 
 <Seo
-	title="Start {data.exam.title}"
+	title="Start {data.exam.title} mock exam"
 	description="Read the exam details and tips, then start your timed {data.exam
 		.title} practice exam."
 />

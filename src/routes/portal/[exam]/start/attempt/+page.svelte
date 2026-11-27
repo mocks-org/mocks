@@ -179,7 +179,7 @@
 	}
 </script>
 
-<Seo title={data.exam.title} index={false} />
+<Seo title="Mock {data.exam.title} exam attempt" index={false} />
 
 <div class="flex min-h-dvh flex-col">
 	{#if attempt}

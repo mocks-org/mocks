@@ -52,7 +52,7 @@
 </script>
 
 <Seo
-	title={data.exam.title}
+	title="Mock {data.exam.title} Information"
 	description="Unofficial {data.exam.title} practice exam: {data.exam
 		.questionCount} questions, {data.exam.durationMinutes} minutes, {data.exam
 		.passPercent}% to pass. Free and anonymous."

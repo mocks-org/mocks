@@ -73,7 +73,7 @@
 	}
 </script>
 
-<Seo title="Results — {data.exam.title}" index={false} />
+<Seo title="Mock {data.exam.title} results" index={false} />
 
 <div class="flex min-h-dvh flex-col">
 	<SessionHeader brand={false}>
