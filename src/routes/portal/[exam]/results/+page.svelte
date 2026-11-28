@@ -101,9 +101,11 @@
 		</h1>
 
 		{#if status === 'loading'}
-			<p role="status" class="text-sm text-on-surface-muted">Scoring your attempt…</p>
+			<p role="status" class="w-full text-center text-sm text-on-surface-muted">
+				Scoring your attempt…
+			</p>
 		{:else if status === 'empty'}
-			<div class="max-w-xl rounded border-2 border-on-surface-muted bg-surface-accent p-5">
+			<div class="mx-auto max-w-xl rounded border-2 border-on-surface-muted bg-surface-accent p-5">
 				<h2 class="text-lg font-bold">No results to show</h2>
 				<p class="mt-2 text-sm leading-relaxed text-on-surface-muted">
 					This tab has no finished attempt. Results are kept in this tab only, so start an exam to
