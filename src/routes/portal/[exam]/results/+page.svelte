@@ -76,12 +76,12 @@
 <Seo title="Mock {data.exam.title} results" index={false} />
 
 <div class="flex min-h-dvh flex-col">
-	<SessionHeader brand={false}>
+	<SessionHeader brand={true}>
 		{#snippet leading()}
 			<p class="min-w-0 truncate text-sm font-semibold text-on-surface">
-				Results
+				Results:
 				<span class="font-normal text-on-surface-muted">
-					· <ExamTitle title={data.exam.title} />
+					Mock <ExamTitle title={data.exam.title} />
 				</span>
 			</p>
 		{/snippet}
@@ -97,7 +97,7 @@
 		class="mx-auto w-full max-w-6xl flex-1 px-3 py-8 sm:px-6 sm:py-12"
 	>
 		<h1 id="results-heading" tabindex="-1" class="sr-only">
-			Results for <ExamTitle title={data.exam.title} />
+			Results for mock <ExamTitle title={data.exam.title} />
 		</h1>
 
 		{#if status === 'loading'}
